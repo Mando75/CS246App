@@ -1,55 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.group4.readingapp.scripturereadingapp.MainActivity">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/Card_View"
-        android:layout_gravity="center"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        card_view:cardCornerRadius="1dp"
-        card_view:cardElevation="15dp"
-        >
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Schedule 1: 72% Complete"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:fontFamily="sans-serif"
-            android:textAlignment="textStart"
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="10sp"
-            />
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Today's reading: asdfjlasd;jflk;ads"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            android:layout_marginTop="50sp"
-            android:layout_marginLeft="10sp"
-            />
+    </android.support.design.widget.AppBarLayout>
 
-        <CheckBox
-            android:layout_marginLeft="310sp"
-            android:layout_marginTop="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBox" />
+    <include layout="@layout/content_main"
+        android:id="@+id/include" />
 
-    </android.support.v7.widget.CardView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="createSchedule"
+        app:srcCompat="@drawable/ic_add_white_24px" />
 
-</RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

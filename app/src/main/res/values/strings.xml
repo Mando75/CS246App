@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Scripture Reading App</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- For the schedule creation activity -->
+    <string name="creator_header">Create a New Schedule</string>
+    <string name="creator_name">Give Your Schedule a Name:</string>
+    <string name="creator_startDate">Starting Date</string>
+    <string name="creator_startDateText">Pick Your Start Date:</string>
+    <string name="creator_endDateText">Pick Your End Date:</string>
+    <string name="creator_startLocation">Pick your starting Book and Chapter:</string>
+    <string name="creator_create">Create</string>
+
+    <string-array name="bomBooks">
+        <item>1 Nephi</item>
+        <item>2 Nephi</item>
+        <item>Jacob</item>
+        <item>Enos</item>
+        <item>Jarom</item>
+        <item>Omni</item>
+        <item>Words of Mormon</item>
+        <item>Mosiah</item>
+        <item>Alma</item>
+        <item>Helamen</item>
+        <item>3 Nephi</item>
+        <item>4 Nephi</item>
+        <item>Mormon</item>
+        <item>Ether</item>
+        <item>Moroni</item>
+    </string-array>
+
 </resources>

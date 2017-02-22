@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.group4.readingapp.scripturereadingapp.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:cardElevation="15dp"
+        android:layout_alignParentTop="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:text="Schedule 1"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:text="Read Alma 7 through Alma 10"
+            android:fontFamily="sans-serif"
+            android:textStyle="italic"
+            android:textSize="12sp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignRight="@+id/cardView"
+            android:layout_alignEnd="@+id/cardView"
+            android:layout_marginRight="19dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginTop="29dp"
+            android:id="@+id/checkBox" />
+    </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
