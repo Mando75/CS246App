@@ -23,4 +23,6 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.group4.readingapp.scripturereadingapp", appContext.getPackageName());
     }
+
+
 }
