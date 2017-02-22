@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity
             android:name=".ScheduleCreator"
             android:label="@string/creator_header"
@@ -26,9 +25,6 @@
             >
 
         </activity>
-=======
-        <activity android:name=".ResultActivity"></activity>
->>>>>>> 9847ce012bfab457a53f4606bb19095d339d6dc7
     </application>
 
 </manifest>
