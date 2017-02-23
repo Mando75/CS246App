@@ -11,6 +11,7 @@
     <string name="creator_endDateText">Pick Your End Date:</string>
     <string name="creator_startLocation">Pick your starting Book and Chapter:</string>
     <string name="creator_create">Create</string>
+    <string name="creator_endLocation">Pick your ending Book and Chapter:</string>
 
     <string-array name="bomBooks">
         <item>1 Nephi</item>
@@ -22,7 +23,7 @@
         <item>Words of Mormon</item>
         <item>Mosiah</item>
         <item>Alma</item>
-        <item>Helamen</item>
+        <item>Helaman</item>
         <item>3 Nephi</item>
         <item>4 Nephi</item>
         <item>Mormon</item>

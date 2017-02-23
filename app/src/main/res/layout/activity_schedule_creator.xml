@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:entries="@array/bomBooks"
-                android:id="@+id/schedBooks"
+                android:id="@+id/schedBooksStart"
                 
                 />
 
@@ -112,7 +112,33 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/schedChapters"
+                android:id="@+id/schedChaptersStart"
+                android:layout_marginTop="5dp"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/creator_endLocation"
+                android:id="@+id/endLocText"
+                android:textSize="16sp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/bomBooks"
+                android:id="@+id/schedBooksEnd"
+
+                />
+
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/schedChaptersEnd"
                 android:layout_marginTop="5dp"
 
                 />
@@ -122,6 +148,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/creator_create"/>
+
+
+
+
         </LinearLayout>
     </RelativeLayout>
 
