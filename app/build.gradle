@@ -33,4 +33,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     // Optional -- Mockito framework
     testCompile 'org.mockito:mockito-android:2.7.10'
+    // Remote binary dependency
+    compile 'com.google.code.gson:gson:2.8.0'
 }
