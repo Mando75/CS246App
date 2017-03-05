@@ -59,7 +59,7 @@ public class NotificationTest {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
         mNotificationManager.notify(mId, mBuilder.build());
-        assertThat(resultIntent, IsNot(0));
+        assert(resultIntent, IsNot(0));
 
     }
 }

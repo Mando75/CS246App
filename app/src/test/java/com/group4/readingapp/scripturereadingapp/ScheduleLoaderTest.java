@@ -13,7 +13,7 @@ public class ScheduleLoaderTest {
     @Test
     public void loadJson() {
         Schedule testSchedule = new Schedule();
-        testSchedule.loadFromFile(filename);
-        testSchedule.displayScheduleConsole();
+//        testSchedule.loadFromFile(filename);
+//        testSchedule.displayScheduleConsole();
     }
 }
