@@ -152,11 +152,12 @@ public class Schedule {
     }
     public void saveToFile(Context context, String filename){
     Log.d(TAG, "Launching Save File");
-        Log.d(TAG, mainSchedule.getAsString());
+//        Log.d(TAG, mainSchedule.getAsString());
         File file = new File(context.getFilesDir(), filename);
         try {
             FileOutputStream stream = new FileOutputStream(file);
-            stream.write(mainSchedule.getAsByte());
+//            String test = "Test String";
+            stream.write(mainSchedule.toString().getBytes());
             stream.close();
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found");
