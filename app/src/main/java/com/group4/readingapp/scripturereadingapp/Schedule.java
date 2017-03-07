@@ -7,14 +7,18 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -22,6 +26,7 @@ import java.util.Date;
  */
 
 public class Schedule {
+    private String scheduleName;
     private JsonObject mainSchedule;
     private JsonObject startPos;
     private JsonObject endPos;
@@ -29,8 +34,43 @@ public class Schedule {
     private Integer remindHour;
     private Date startDate;
     private Date endDate;
+    // constants for the list indexs
+    public static final int NAME = 0;
+    public static final int START_DATE = 1;
+    public static final int END_DATE = 2;
+    public static final int READ_TIME = 3;
+    public static final int START_BOOK = 4;
+    public static final int START_CHAPTER = 5;
+    public static final int START_VERSE = 6;
+    public static final int END_BOOK = 7;
+    public static final int END_CHAPTER = 8;
+    public static final int END_VERSE = 9;
+    private static final String TAG = "Schedule Class";
 
-    Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    // Constructor with a List String Parameter
+    // List contains name, start date, end date, reading time, starting book chapter ending book chapter
+    public Schedule(List<String> scheduleInfo) {
+
+        scheduleName = scheduleInfo.get(NAME);
+        buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
+        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), scheduleInfo.get(END_VERSE));
+        try {
+            startDate = (Date) formatter.parseObject(scheduleInfo.get(START_DATE));
+        } catch (ParseException e) {
+            Log.d(TAG, "Schedule: Error parsing start Date in constructor");
+            e.printStackTrace();
+        }
+        try {
+            endDate = (Date) formatter.parseObject(scheduleInfo.get(END_DATE));
+        } catch (ParseException e){
+            Log.d(TAG, "Schedule: Error parsing end Date in constructor");
+            e.printStackTrace();
+        }
+        buildJson();
+    }
 
 
     //setters
@@ -111,14 +151,30 @@ public class Schedule {
 
     }
     public void saveToFile(Context context, String filename){
+    Log.d(TAG, "Launching Save File");
+        Log.d(TAG, mainSchedule.getAsString());
+        File file = new File(context.getFilesDir(), filename);
         try {
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
-        outputStreamWriter.write(mainSchedule.toString());
-        outputStreamWriter.close();
+            FileOutputStream stream = new FileOutputStream(file);
+            stream.write(mainSchedule.getAsByte());
+            stream.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.d(TAG, "IO exception thrown");
+            e.printStackTrace();
         }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+
+
+//        try {
+//        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
+//        outputStreamWriter.write(mainSchedule.toString());
+//        outputStreamWriter.close();
+//        }
+//        catch (IOException e) {
+//            Log.e("Exception", "File write failed: " + e.toString());
+//        }
     }
 
     public void displayScheduleConsole(){

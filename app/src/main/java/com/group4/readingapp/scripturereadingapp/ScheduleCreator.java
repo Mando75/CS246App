@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ScheduleCreator extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -20,20 +23,30 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     protected Spinner startChap;
     protected Spinner endBook;
     protected Spinner endChap;
+    protected EditText name;
+    protected DatePicker startDate;
+    protected DatePicker endDate;
+    protected TimePicker readTime;
+    protected Button createButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_creator);
         setDatePickers();
-        Log.d("addChap", "Adding itemselected listener");
+        createButton = (Button) findViewById(R.id.createButton);
+        Log.d("addChap", "Adding item selected listener");
         startBook = (Spinner) findViewById(R.id.schedBooksStart);
         startChap = (Spinner) findViewById(R.id.schedChaptersStart);
         endBook = (Spinner) findViewById(R.id.schedBooksEnd);
         endChap = (Spinner) findViewById(R.id.schedChaptersEnd);
         startBook.setOnItemSelectedListener(this);
         endBook.setOnItemSelectedListener(this);
-
+        name = (EditText) findViewById(R.id.schedNameInput);
+        startDate = (DatePicker) findViewById(R.id.startDatePicker);
+        endDate = (DatePicker) findViewById((R.id.endDatePicker));
+        readTime = (TimePicker) findViewById(R.id.timePicker);
     }
 
     @Override
@@ -51,7 +64,6 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         startChap.setAdapter(startAdapter);
         ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, endChapter);
         endChap.setAdapter(endAdapter);
-        Log.d("hello", "hellos?");
     }
 
     @Override
@@ -139,6 +151,22 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                 break;
         }
         return startChapter;
+    }
+
+    public void createSchedule(View view) {
+        List<String> schedInfo = new ArrayList<>();
+        schedInfo.add(name.getText().toString());
+        schedInfo.add(startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
+        schedInfo.add(endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
+        schedInfo.add(readTime.getCurrentHour() + ":" + readTime.getCurrentMinute());
+        schedInfo.add(startBook.getSelectedItem().toString());
+        schedInfo.add(startChap.getSelectedItem().toString());
+        schedInfo.add("20");
+        schedInfo.add(endBook.getSelectedItem().toString());
+        schedInfo.add(endBook.getSelectedItem().toString());
+        schedInfo.add("30");
+        Log.d("Schedule Create", "Launching async task...");
+        new CreateSchedule(schedInfo, context).execute();
     }
 }
 

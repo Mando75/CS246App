@@ -1,6 +1,7 @@
 package com.group4.readingapp.scripturereadingapp;
 
 import android.content.Context;
+import android.test.mock.MockContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,7 @@ public class ScheduleSaveTest
 {
 
     @Mock
-    Context context;
+    MockContext context;
     @Test
     public void saveTest() throws Exception {
 
