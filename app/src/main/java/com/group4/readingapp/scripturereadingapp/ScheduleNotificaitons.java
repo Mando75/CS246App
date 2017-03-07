@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.content.Context;
@@ -24,6 +25,7 @@ public class ScheduleNotificaitons {
     DatePicker endDate;
     TimePicker time;
     Context mContext;
+    private final String TAG = "startNotifications";
 
     ScheduleNotificaitons(DatePicker sd, DatePicker ed, TimePicker t){
         startDate = sd;
@@ -57,6 +59,7 @@ public class ScheduleNotificaitons {
 
         Date current = c.getTime();
 
+        Log.d(TAG, "starting notification creation");
         // create a notification
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mContext)
@@ -87,6 +90,7 @@ public class ScheduleNotificaitons {
         int mId = 1;
 
 
+        Log.d(TAG, "finished creating notification")
         while (minDate.getTime() <= current.getTime() && endDate.getTime() >= current.getTime()){
             mNotificationManager.notify(mId, mBuilder.build());
         }
