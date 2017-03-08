@@ -1,6 +1,9 @@
 package com.group4.readingapp.scripturereadingapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +50,6 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         name = (EditText) findViewById(R.id.schedNameInput);
         startDate = (DatePicker) findViewById(R.id.startDatePicker);
         endDate = (DatePicker) findViewById((R.id.endDatePicker));
-        readTime = (TimePicker) findViewById(R.id.timePicker);
     }
 
     @Override
@@ -167,6 +170,19 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         schedInfo.add("30");
         Log.d("Schedule Create", "Launching async task...");
         new CreateSchedule(schedInfo, context).execute();
+        scheduleNotifications();
+    }
+
+    public void scheduleNotifications(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 14);
+
+        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 100, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pi);
     }
 }
 
