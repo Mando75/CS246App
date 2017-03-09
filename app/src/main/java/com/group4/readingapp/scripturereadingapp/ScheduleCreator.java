@@ -76,6 +76,7 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
+        validLocations = true;
         List<String> startChapter = new ArrayList<String>();
         List<String> endChapter = new ArrayList<String>();
         String startingBook = startBook.getSelectedItem().toString();
@@ -183,27 +184,30 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     }
 
     public void createSchedule(View view) {
-        if (name.getText().toString().equals("")) {
-            validLocations = false;
-        }
-        if (validLocations) {
-            List<String> schedInfo = new ArrayList<>();
-            schedInfo.add(name.getText().toString());
-            schedInfo.add(startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
-            schedInfo.add(endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
+        if (!name.getText().toString().equals("")) {
+
+            if (validLocations) {
+                List<String> schedInfo = new ArrayList<>();
+                schedInfo.add(name.getText().toString());
+                schedInfo.add(startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
+                schedInfo.add(endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
 //        schedInfo.add(readTime.getCurrentHour() + ":" + readTime.getCurrentMinute());
-            schedInfo.add("12:35");
-            schedInfo.add(startBook.getSelectedItem().toString());
-            schedInfo.add(startChap.getSelectedItem().toString());
-            schedInfo.add("20");
-            schedInfo.add(endBook.getSelectedItem().toString());
-            schedInfo.add(endBook.getSelectedItem().toString());
-            schedInfo.add("30");
-            Log.d("Schedule Create", "Launching async task...");
-            new CreateSchedule(schedInfo, context).execute();
-            scheduleNotifications();
+                schedInfo.add("12:35");
+                schedInfo.add(startBook.getSelectedItem().toString());
+                schedInfo.add(startChap.getSelectedItem().toString());
+                schedInfo.add("20");
+                schedInfo.add(endBook.getSelectedItem().toString());
+                schedInfo.add(endBook.getSelectedItem().toString());
+                schedInfo.add("30");
+                Log.d("Schedule Create", "Launching async task...");
+                new CreateSchedule(schedInfo, context).execute();
+                scheduleNotifications();
+            } else {
+                Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the info you provided.", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         } else {
-            Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the info you provided.", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the name you entered", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
