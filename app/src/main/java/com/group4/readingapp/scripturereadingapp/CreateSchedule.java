@@ -42,7 +42,7 @@ class CreateSchedule extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         Log.d(TAG, "Launching Pre execute");
-        Toast toast = Toast.makeText(context, "Creating file...", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(context, "Creating schedule...", Toast.LENGTH_SHORT);
         toast.show();
         Log.d(TAG, "Finished preexecute");
     }
@@ -50,7 +50,7 @@ class CreateSchedule extends AsyncTask<Void, Void, Void> {
 
     protected void onPostExecute(Void... params) {
         Log.d(TAG, " About to launch postExecute");
-        Toast toast = Toast.makeText(context, "FileSaved...", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(context, "Success!...", Toast.LENGTH_SHORT);
         toast.show();
         Log.d(TAG, " Finished post");
     }

@@ -7,14 +7,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +36,8 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     protected DatePicker endDate;
     protected TimePicker readTime;
     protected Button createButton;
+    protected ScrollView view;
+    private boolean validLocations;
 
 
     @Override
@@ -50,6 +56,21 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         name = (EditText) findViewById(R.id.schedNameInput);
         startDate = (DatePicker) findViewById(R.id.startDatePicker);
         endDate = (DatePicker) findViewById((R.id.endDatePicker));
+        view = (ScrollView) findViewById(R.id.scrollView1);
+        view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.requestFocusFromTouch();
+                return false;
+            }
+        });
+        validLocations = true;
+        endBook.setSelection(14);
+        endChap.setSelection(9);
+
     }
 
     @Override
@@ -67,6 +88,11 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         startChap.setAdapter(startAdapter);
         ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, endChapter);
         endChap.setAdapter(endAdapter);
+        if(endBook.getSelectedItemPosition() < startBook.getSelectedItemPosition()) {
+            validLocations = false;
+            Toast toast = Toast.makeText(context, "Please pick a book after your starting book...", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     @Override
@@ -157,20 +183,29 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     }
 
     public void createSchedule(View view) {
-        List<String> schedInfo = new ArrayList<>();
-        schedInfo.add(name.getText().toString());
-        schedInfo.add(startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
-        schedInfo.add(endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
-        schedInfo.add(readTime.getCurrentHour() + ":" + readTime.getCurrentMinute());
-        schedInfo.add(startBook.getSelectedItem().toString());
-        schedInfo.add(startChap.getSelectedItem().toString());
-        schedInfo.add("20");
-        schedInfo.add(endBook.getSelectedItem().toString());
-        schedInfo.add(endBook.getSelectedItem().toString());
-        schedInfo.add("30");
-        Log.d("Schedule Create", "Launching async task...");
-        new CreateSchedule(schedInfo, context).execute();
-        scheduleNotifications();
+        if (name.getText().toString().equals("")) {
+            validLocations = false;
+        }
+        if (validLocations) {
+            List<String> schedInfo = new ArrayList<>();
+            schedInfo.add(name.getText().toString());
+            schedInfo.add(startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
+            schedInfo.add(endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
+//        schedInfo.add(readTime.getCurrentHour() + ":" + readTime.getCurrentMinute());
+            schedInfo.add("12:35");
+            schedInfo.add(startBook.getSelectedItem().toString());
+            schedInfo.add(startChap.getSelectedItem().toString());
+            schedInfo.add("20");
+            schedInfo.add(endBook.getSelectedItem().toString());
+            schedInfo.add(endBook.getSelectedItem().toString());
+            schedInfo.add("30");
+            Log.d("Schedule Create", "Launching async task...");
+            new CreateSchedule(schedInfo, context).execute();
+            scheduleNotifications();
+        } else {
+            Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the info you provided.", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void scheduleNotifications(){
