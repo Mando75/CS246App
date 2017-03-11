@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("File", files[i].getName());
             schedules[i] = new Schedule();
             schedules[i].loadFromFile(context, files[i].getName());
+
             cardViews[i] = new CardView(this);
             cardViews[i].setCardElevation(15);
             cardViews[i].setContentPadding(10,10,10,10);

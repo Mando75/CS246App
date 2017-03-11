@@ -150,17 +150,7 @@ public class Schedule {
             Log.e("Loading File", "Can not read file: " + e.toString());
         }
         mainSchedule = null;
-        try{
-            JSONObject obj = new JSONObject(ret);
-            Log.d(TAG, "loadFromFile: " + obj);
-        }
-        catch (JSONException e){
-            Log.e(TAG, "Unable to parse: " + e);
-        }
         mainSchedule = new Gson().fromJson(ret, JsonObject.class);
-        Log.d(TAG, "loadFromFile: " + mainSchedule.get("startPos"));
-        Log.d(TAG, "loadFromFile: " + mainSchedule.get("endPos"));
-        Log.d(TAG, "loadFromFile: " + mainSchedule.get("currentPos"));
         if(!mainSchedule.get("startPos").isJsonNull())
             startPos = new Gson().fromJson(mainSchedule.get("startPos"), JsonObject.class);
         if(!mainSchedule.get("endPos").isJsonNull())
