@@ -4,9 +4,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,6 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -89,7 +90,7 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         startChap.setAdapter(startAdapter);
         ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, endChapter);
         endChap.setAdapter(endAdapter);
-        if(endBook.getSelectedItemPosition() < startBook.getSelectedItemPosition()) {
+        if (endBook.getSelectedItemPosition() < startBook.getSelectedItemPosition()) {
             validLocations = false;
             Toast toast = Toast.makeText(context, "Please pick a book after your starting book...", Toast.LENGTH_LONG);
             toast.show();
@@ -201,7 +202,6 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                 schedInfo.add("30");
                 Log.d("Schedule Create", "Launching async task...");
                 new CreateSchedule(schedInfo, context).execute();
-                scheduleNotifications();
             } else {
                 Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the info you provided.", Toast.LENGTH_SHORT);
                 toast.show();
@@ -210,18 +210,22 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
             Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the name you entered", Toast.LENGTH_SHORT);
             toast.show();
         }
+        scheduleNotifications();
     }
 
-    public void scheduleNotifications(){
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 14);
+    public void scheduleNotifications() {
+        Calendar calendar = Calendar.getInstance();
 
-        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 100, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pi);
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 8);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent myIntent = new Intent(this.getApplicationContext(), NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, myIntent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
     }
 }
 
