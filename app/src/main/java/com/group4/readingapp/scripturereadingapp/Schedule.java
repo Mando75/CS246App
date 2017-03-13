@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,6 +32,9 @@ public class Schedule {
     private String scheduleName;
     private JsonObject mainSchedule;
     private JsonObject startPos;
+    private int start_book;
+    private int start_chapter;
+    private int start_verse;
     private JsonObject endPos;
     private JsonObject currentPos;
     private Integer remindHour;
@@ -52,11 +58,15 @@ public class Schedule {
 
     // Constructor with a List String Parameter
     // List contains name, start date, end date, reading time, starting book chapter ending book chapter
+    public Schedule(){
+
+    }
     public Schedule(List<String> scheduleInfo) {
 
         scheduleName = scheduleInfo.get(NAME);
         buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
         buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), scheduleInfo.get(END_VERSE));
+        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
         try {
             startDate = (Date) formatter.parseObject(scheduleInfo.get(START_DATE));
         } catch (ParseException e) {
@@ -99,6 +109,7 @@ public class Schedule {
         String dateStart = formatter.format(startDate);
         mainSchedule.addProperty("startDate", dateStart);
         String dateEnd = formatter.format(endDate);
+        mainSchedule.addProperty("endDate", dateEnd);
         mainSchedule.addProperty("frequency", remindHour);
     }
     public void buildStart(String book, String chapter, String verse){
@@ -123,23 +134,15 @@ public class Schedule {
         currentPos.addProperty("verse", verse);
     }
     public void loadFromFile(Context context, String filename){
-        String ret = "";
+        String ret = new String();
         try {
             InputStream inputStream = context.openFileInput(filename);
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString;
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            ret = new String(buffer, "UTF-8");
+            Log.d(TAG, "loadFromFile: " + ret);
         }
         catch (FileNotFoundException e) {
             Log.e("Loading File", "File not found: " + e.toString());
@@ -148,7 +151,18 @@ public class Schedule {
         }
         mainSchedule = null;
         mainSchedule = new Gson().fromJson(ret, JsonObject.class);
-
+        if(!mainSchedule.get("startPos").isJsonNull())
+            startPos = new Gson().fromJson(mainSchedule.get("startPos"), JsonObject.class);
+        if(!mainSchedule.get("endPos").isJsonNull())
+            endPos = new Gson().fromJson(mainSchedule.get("endPos"), JsonObject.class);
+        if(!mainSchedule.get("currentPos").isJsonNull())
+            currentPos = new Gson().fromJson(mainSchedule.get("currentPos"), JsonObject.class);
+        if(!mainSchedule.get("startDate").isJsonNull())
+            startDate = new Gson().fromJson(mainSchedule.get("startDate"), Date.class);
+        if(!mainSchedule.get("endDate").isJsonNull())
+            endDate = new Gson().fromJson(mainSchedule.get("endDate"), Date.class);
+        if(!mainSchedule.get("frequency").isJsonNull())
+            remindHour = new Gson().fromJson(mainSchedule.get("frequency"), Integer.class);
     }
     public void saveToFile(Context context, String filename){
     Log.d(TAG, "Launching Save File");

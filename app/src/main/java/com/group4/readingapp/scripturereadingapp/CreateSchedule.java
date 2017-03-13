@@ -30,7 +30,7 @@ class CreateSchedule extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         Log.d(TAG, " About to launch doInBackgroud");
-        schedule.saveToFile(context, infoList.get(schedule.NAME).replaceAll("\\s+","") + ".json");
+        schedule.saveToFile(context, infoList.get(schedule.NAME).replaceAll("\\s+","_") + ".json");
         String[] files = context.fileList();
         for(int i = 0; i < files.length; i++) {
             Log.d(TAG, files[i]);
