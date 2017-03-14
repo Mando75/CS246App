@@ -34,8 +34,6 @@ import java.io.FilenameFilter;
 
 public class MainActivity extends AppCompatActivity {
 
-    Context context = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < files.length; i++) {
             Log.d("File", files[i].getName());
             schedules[i] = new Schedule();
-            schedules[i].loadFromFile(context, files[i].getName());
+            schedules[i].loadFromFile(getApplicationContext(), files[i].getName());
 
             cardViews[i] = new CardView(this);
             cardViews[i].setCardElevation(15);

@@ -211,11 +211,13 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
             Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the name you entered", Toast.LENGTH_SHORT);
             toast.show();
         }
+        scheduleNotifications();
     }
 
     public void scheduleNotifications(){
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 14);
+        c.set(Calendar.HOUR_OF_DAY, 15);
+        c.set(Calendar.MINUTE, 2);
 
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 100, intent,

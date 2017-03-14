@@ -18,12 +18,12 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent){
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent reading = new Intent(context, CursorJoiner.Result.class);
+        Intent reading = new Intent(context, ResultActivity.class);
         reading.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pi = PendingIntent.getActivity(context, 100, reading, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // build notificaiton
+        // build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pi)
                 .setSmallIcon(android.R.drawable.arrow_up_float)
@@ -31,7 +31,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setContentText("Daily Reading")
                 .setAutoCancel(true);
 
-        // build the notification
+        // send the notification
         nm.notify(100, builder.build());
     }
 }
