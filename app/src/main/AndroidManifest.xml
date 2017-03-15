@@ -23,18 +23,18 @@
         <activity
             android:name=".ScheduleCreator"
             android:label="@string/creator_header"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ResultActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_result"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/FullscreenTheme" />
 
-        </activity>
-        <receiver android:name=".NotificationReceiver">
+        <receiver android:name=".NotificationReceiver" />
 
-        </receiver>
+        <activity
+            android:name=".ScheduleViewer"
+            android:label="@string/schedView"></activity>
     </application>
 
 </manifest>
