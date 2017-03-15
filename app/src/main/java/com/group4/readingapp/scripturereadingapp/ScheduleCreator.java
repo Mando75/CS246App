@@ -25,6 +25,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Bryan Muller, Jonathon Fidiam, Loren Miller
+ * @version 1.0
+ *
+ * This Class builds the activity that allows users to create schedules
+ * <p>
+ *     The user is presented with various inputs that allow them to pick
+ *     a name for the schedule, a start and end date, and starting and ending
+ *     locations.
+ *     These items are then parsed and sent to a CreateSchedule AsnycTask to generate
+ *     a Schedule object, and save it to a file. This activity will then relaunch the main activity.
+ * </p>
+ */
+
 public class ScheduleCreator extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     final Context context = this;
     protected Spinner startBook;
@@ -39,7 +53,14 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     protected ScrollView view;
     private boolean validLocations;
 
-
+    /**
+     *
+     * @param savedInstanceState
+     * Basic set up for the activity
+     * <p>onCreate sets all the variables to the items in the layout.
+     * It will also set several onClick and onSelect listeners to update
+     * the chapter spinners based on the values entered in the book selectors.</p>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +94,17 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
 
     }
 
+    /**
+     * setting listeners to update chapter spinners
+     * <p>Sets a listener to populate the chapter spinners with the proper amount
+     * of chapters when a book is selected. Also includes brief error checking to make sure it
+     * is a valid entry. </p>
+     * @param parent
+     * @param view
+     * @param pos
+     * @param id
+     *
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
@@ -96,11 +128,15 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         }
     }
 
+
     @Override
     public void onNothingSelected(AdapterView<?> parentView) {
         // your code here
     }
 
+    /**
+     * A simple function to set the Date pickers to appropriate values
+     */
     private void setDatePickers() {
         DatePicker startDate = (DatePicker) findViewById(R.id.startDatePicker);
         startDate.setMinDate(System.currentTimeMillis() - 1000);
@@ -109,6 +145,14 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         endDate.setMinDate(System.currentTimeMillis() + 604800000);
     }
 
+    /**
+     * builds a string array used to populate the chapter spinners
+     * based on which book the user selected.
+     * @param starter
+     * @return startChapter
+     *
+     *
+     */
     private List<String> chapterMaker(String starter) {
         List<String> startChapter = new ArrayList<String>();
         switch (starter) {
@@ -183,6 +227,14 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         return startChapter;
     }
 
+    /**
+     * Gathers the data from the various inputs, and uses them to create a List that can be
+     * passed to the CreateSchdule object. It will additionally set the notifications.
+     * @see CreateSchedule
+     * @see NotificationReceiver
+     * @param view
+     *
+     */
     public void createSchedule(View view) {
         if (!name.getText().toString().equals("")) {
 
