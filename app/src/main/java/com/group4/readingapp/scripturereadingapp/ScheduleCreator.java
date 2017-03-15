@@ -92,6 +92,9 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         endBook.setSelection(14);
         endChap.setSelection(9);
 
+        TimePicker timePicker = (TimePicker) findViewById(R.id.time_picker);
+        timePicker.setIs24HourView(true);
+
     }
 
     /**
@@ -268,8 +271,11 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
 
     public void scheduleNotifications(){
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 15);
-        c.set(Calendar.MINUTE, 2);
+
+        TimePicker timePicker = (TimePicker) findViewById(R.id.time_picker);
+
+        c.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+        c.set(Calendar.MINUTE, timePicker.getCurrentMinute());
 
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 100, intent,
