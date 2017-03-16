@@ -35,12 +35,14 @@ public class Schedule {
     private int start_book;
     private int start_chapter;
     private int start_verse;
+    private long currentChapterId;
+    private long endChapterId;
     private JsonObject endPos;
     private JsonObject currentPos;
     private Integer remindHour;
     private Date startDate;
     private Date endDate;
-    // constants for the list indexs
+    // constants for the list indexes
     public static final int NAME = 0;
     public static final int START_DATE = 1;
     public static final int END_DATE = 2;
@@ -51,6 +53,8 @@ public class Schedule {
     public static final int END_BOOK = 7;
     public static final int END_CHAPTER = 8;
     public static final int END_VERSE = 9;
+    public static final int CHAPTER_ID = 10;
+    public static final int END_CHAPTER_ID = 11;
     private static final String TAG = "Schedule Class";
 
 
@@ -65,8 +69,8 @@ public class Schedule {
 
         scheduleName = scheduleInfo.get(NAME);
         buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
-        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), scheduleInfo.get(END_VERSE));
-        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
+        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), scheduleInfo.get(END_VERSE), Integer.parseInt(scheduleInfo.get(END_CHAPTER_ID)));
+        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE), Integer.parseInt(scheduleInfo.get(CHAPTER_ID)));
         try {
             startDate = (Date) formatter.parseObject(scheduleInfo.get(START_DATE));
         } catch (ParseException e) {
@@ -119,19 +123,21 @@ public class Schedule {
         startPos.addProperty("chapter", chapter);
         startPos.addProperty("verse", verse);
     }
-    public void buildEnd(String book, String chapter, String verse){
+    public void buildEnd(String book, String chapter, String verse, int chapId){
         endPos = null;
         endPos = new JsonObject();
         endPos.addProperty("book", book);
         endPos.addProperty("chapter", chapter);
         endPos.addProperty("verse", verse);
+        endPos.addProperty("chapId", chapId);
     }
-    public void buildCurrent(String book, String chapter, String verse){
+    public void buildCurrent(String book, String chapter, String verse, int chapId){
         currentPos = null;
         currentPos = new JsonObject();
         currentPos.addProperty("book", book);
         currentPos.addProperty("chapter", chapter);
         currentPos.addProperty("verse", verse);
+        currentPos.addProperty("chapId", chapId);
     }
     public void loadFromFile(Context context, String filename){
         String ret = new String();

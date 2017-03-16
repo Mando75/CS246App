@@ -4,9 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ScrollView;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by starw on 3/15/2017.
@@ -16,17 +22,37 @@ import java.util.TreeMap;
 
 public class CalcSched extends AsyncTask<Void, Void, Void> {
 
-    Schedule schedule;
-    Context context;
-    ScrollView scrollView;
-    NavigableMap<Integer, String> chapToBook;
-    Map<String, Integer> bookToRef;
+    private Schedule schedule;
+    private Context context;
+    protected ScrollView scrollView;
+    protected NavigableMap<Integer, String> chapToBook;
+    protected Map<String, Integer> bookToRef;
+    private DailyReading[] readings;
+    private Date startingDate;
+    private Date endingDate;
+    private int numDays;
+    private int chapsToRead;
+    private int chapsPerDay;
 
-    public CalcSched(Schedule sched, Context theContext, ScrollView scroll) {
-        schedule = sched;
+    public CalcSched(String filename, Context theContext, ScrollView scroll) {
+        schedule = new Schedule();
+        schedule.loadFromFile(theContext, filename);
         context = theContext;
         scrollView = scroll;
-        chapToBook = new TreeMap<Integer, String>();
+//        chapToBook = new TreeMap<Integer, String>();
+        bookToRef = new TreeMap<String, Integer>();
+        startingDate = schedule.getStartDate();
+        endingDate = schedule.getEndDate();
+        long milli = endingDate.getTime() - startingDate.getTime();
+        numDays = (int) TimeUnit.DAYS.convert(milli, TimeUnit.MILLISECONDS);
+        chapsToRead = schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt();
+        chapsPerDay = chapsToRead / numDays;
+        readings = null;
+    }
+
+    @Override
+    protected  void onPreExecute() {
+        // build the chapToBook map
         chapToBook.put(1, "1 Nephi");
         chapToBook.put(23, "2 Nephi");
         chapToBook.put(56, "Jacob");
@@ -44,7 +70,8 @@ public class CalcSched extends AsyncTask<Void, Void, Void> {
         chapToBook.put(231, "Moroni");
         chapToBook.put(241, "Invalid Chapter");
 
-        bookToRef = new TreeMap<String, Integer>();
+
+        // build the bookToRef map
         bookToRef.put("1 Nephi", 0);
         bookToRef.put("2 Nephi", 22);
         bookToRef.put("Jacob", 55);
@@ -61,16 +88,23 @@ public class CalcSched extends AsyncTask<Void, Void, Void> {
         bookToRef.put("Ether", 215);
         bookToRef.put("Moroni", 230);
         bookToRef.put("Invalid Chapter", null);
-    }
 
-    @Override
-    protected  void onPreExecute() {
+        // create an array of readings
+        readings = new DailyReading[numDays];
 
     }
 
     @Override
     protected Void doInBackground(Void... params) {
 
+        List<String> info = new ArrayList<>();
+        info.add(DailyReading.START_CHAP, schedule.getCurrentPos().get("chapId").getAsString());
+        info.add(DailyReading.START_BOOK, chapToBook.floorEntry(schedule.getCurrentPos().get("chapId").getAsInt()).getValue());
+        info.add(DailyReading.END_CHAP, Integer.toString(schedule.getCurrentPos().get("chapId").getAsInt() + chapsPerDay));
+        info.add(DailyReading.END_BOOK, chapToBook.floorEntry(schedule.getCurrentPos().get("chapId").getAsInt() + chapsPerDay).getValue());
+        info.add(DailyReading.START_CHAP_REF, "Chapter " + Integer.toString(schedule.getCurrentPos().get("chapId").getAsInt() - bookToRef.get(info.get(DailyReading.START_BOOK))));
+        info.add(DailyReading.END_CHAP_REF, "Chapter " + Integer.toString((schedule.getCurrentPos().get("chapId").getAsInt() + chapsPerDay) - bookToRef.get(info.get(DailyReading.END_BOOK))));
+        DailyReading reading = new DailyReading(info);
         return null;
     }
 
