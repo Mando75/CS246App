@@ -25,6 +25,9 @@ public class DailyReading {
     protected static final int END_POS = 6;
 
 
+    public DailyReading() {
+
+    }
 
     public DailyReading(List<String> info) {
         startChap = Integer.parseInt(info.get(START_CHAP));
@@ -33,7 +36,7 @@ public class DailyReading {
         endBook = info.get(END_BOOK);
         startChapRef = info.get(START_CHAP_REF);
         endChapRef = info.get(END_CHAP_REF);
-        endPos = Integer.parseInt(info.get(END_POS));
+        endPos = 0;
     }
     public int getEndChap() {return endChap;}
     public int getEndPos() {return endPos;}

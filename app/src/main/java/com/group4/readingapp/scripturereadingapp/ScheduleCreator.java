@@ -242,7 +242,10 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         if (!name.getText().toString().equals("")) {
 
             if (validLocations) {
-                List<String> schedInfo = new ArrayList<>();
+                List<String> schedInfo = new ArrayList<>(12);
+                for (int i = 0; i < 12; i++) {
+                    schedInfo.add("");
+                }
                 schedInfo.add(Schedule.NAME, name.getText().toString());
                 schedInfo.add(Schedule.START_DATE, startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
                 schedInfo.add(Schedule.END_DATE, endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
