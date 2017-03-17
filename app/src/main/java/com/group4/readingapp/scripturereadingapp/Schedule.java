@@ -6,17 +6,11 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -164,14 +158,14 @@ public class Schedule {
             endDate = new Gson().fromJson(mainSchedule.get("endDate"), Date.class);
         if(!mainSchedule.get("frequency").isJsonNull())
             remindHour = new Gson().fromJson(mainSchedule.get("frequency"), Integer.class);
+
+
     }
     public void saveToFile(Context context, String filename){
     Log.d(TAG, "Launching Save File");
-//        Log.d(TAG, mainSchedule.getAsString());
         File file = new File(context.getFilesDir(), filename);
         try {
             FileOutputStream stream = new FileOutputStream(file);
-//            String test = "Test String";
             stream.write(mainSchedule.toString().getBytes());
             stream.close();
         } catch (FileNotFoundException e) {
@@ -181,16 +175,7 @@ public class Schedule {
             Log.d(TAG, "IO exception thrown");
             e.printStackTrace();
         }
-
-
-//        try {
-//        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
-//        outputStreamWriter.write(mainSchedule.toString());
-//        outputStreamWriter.close();
-//        }
-//        catch (IOException e) {
-//            Log.e("Exception", "File write failed: " + e.toString());
-//        }
+        Log.d(TAG, "loadFromFile: " + currentPos.toString());
     }
 
     public void displayScheduleConsole(){

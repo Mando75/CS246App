@@ -1,15 +1,21 @@
 package com.group4.readingapp.scripturereadingapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,8 +47,14 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     private Date endingDate;
     private int numDays;
     private int chapsToRead;
+    private String filenameResave;
     private int chapsPerDay;
     private DailyReading reading;
+    private DailyReading[] reads;
+    private int k;
+    private CardView[] card;
+    private CheckBox[] checkBox;
+    public Boolean restart = false;
 
 
     /**
@@ -56,6 +68,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
      */
     public CalcSched(String filename, Context theContext, RelativeLayout layout) {
         schedule = new Schedule();
+        filenameResave = filename;
         schedule.loadFromFile(theContext, filename);
         context = theContext;
         view = layout;
@@ -178,9 +191,16 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
      */
     @Override
     protected void onProgressUpdate(DailyReading... read) {
-        CardView[] card = new CardView[read.length];
+        card = new CardView[read.length];
+        checkBox = new CheckBox[read.length];
+        reads = read;
+        createCards(read);
+    }
+    public void createCards(DailyReading[] read){
         for(int i = 0; i < read.length; i++){
+            k = i;
             DailyReading dailyReading = read[i];
+            final DailyReading finalReading = read[i];
             card[i] = new CardView(context);
             card[i].setCardElevation(15);
             card[i].setContentPadding(10,10,10,10);
@@ -188,9 +208,11 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             view.addView(card[i]);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)card[i].getLayoutParams();
             params.width = CardView.LayoutParams.MATCH_PARENT;
-            params.height = CardView.LayoutParams.WRAP_CONTENT;
+            params.height = 240;
             params.setMargins(1,5,1,15);
             card[i].setLayoutParams(params);
+            final CardView finalCard = card[i];
+
             RelativeLayout innerLayout = new RelativeLayout(context);
             card[i].addView(innerLayout);
             FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)innerLayout.getLayoutParams();
@@ -203,7 +225,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             innerLayout.setLayoutParams(params2);
 
             TextView textView1 = new TextView(context);
-            textView1.setText(dailyReading.getStartBook() + " " + dailyReading.getStartChapRef());
+            textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + chapsPerDay + " chapters.");
             textView1.setId(View.generateViewId());
             textView1.setTextSize(25);
             textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
@@ -212,9 +234,41 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
             params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
             textView1.setLayoutParams(params3);
+
+            checkBox[i] = new CheckBox(context);
+            innerLayout.addView(checkBox[i]);
+            RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams)checkBox[i].getLayoutParams();
+            params4.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params4.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params4.addRule(RelativeLayout.CENTER_VERTICAL);
+            params4.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params4.setMarginEnd(19);
+            checkBox[i].setLayoutParams(params4);
+            checkBox[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    if ( isChecked )
+                    {
+                        Log.d(TAG, "onCheckedChanged: " + finalReading.getEndBook() + " " + finalReading.getEndChapRef());
+                        removeCard(finalCard, finalReading);
+                    }
+
+                }
+            });
         }
     }
-
+    public void removeCard(CardView card, DailyReading read){
+            CardView cardView = (CardView) view.findViewById(card.getId());
+            ((ViewManager)cardView.getParent()).removeView(cardView);
+            Log.d(TAG, "removeCard: " + read.getEndBook() + " " + read.getEndChap());
+            schedule.buildCurrent(read.getEndBook(), read.getEndChapRef().replace("Chapter ", ""), read.getEndChap());
+            schedule.buildJson();
+            schedule.saveToFile(context, filenameResave);
+            Log.d(TAG, "onCheckedChanged: Item Removed");
+            restart = true;
+    }
     @Override
     protected void onPostExecute(Void result) {
 

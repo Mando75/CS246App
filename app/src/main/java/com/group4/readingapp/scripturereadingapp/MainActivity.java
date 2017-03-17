@@ -1,28 +1,17 @@
 package com.group4.readingapp.scripturereadingapp;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-//import android.support.design.widget.FloatingActionButton;
-//import android.support.design.widget.Snackbar;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -147,15 +136,7 @@ public class MainActivity extends AppCompatActivity {
             params4.setMargins(5,5,5,5);
             textView2.setLayoutParams(params4);
 
-            CheckBox checkBox = new CheckBox(this);
-            innerLayout.addView(checkBox);
-            RelativeLayout.LayoutParams params5 = (RelativeLayout.LayoutParams)checkBox.getLayoutParams();
-            params5.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params5.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params5.addRule(RelativeLayout.CENTER_VERTICAL);
-            params5.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            params5.setMarginEnd(19);
-            checkBox.setLayoutParams(params5);
+
         }
     }
 
