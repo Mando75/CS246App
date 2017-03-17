@@ -253,10 +253,8 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                 schedInfo.add(Schedule.READ_TIME,"12:35");
                 schedInfo.add(Schedule.START_BOOK, startBook.getSelectedItem().toString());
                 schedInfo.add(Schedule.START_CHAPTER, startChap.getSelectedItem().toString().replace("Chapter ", ""));
-                schedInfo.add(Schedule.START_VERSE, "20");
                 schedInfo.add(Schedule.END_BOOK, endBook.getSelectedItem().toString());
                 schedInfo.add(Schedule.END_CHAPTER, endChap.getSelectedItem().toString().replace("Chapter ", ""));
-                schedInfo.add(Schedule.END_VERSE, "30");
                 schedInfo.add(Schedule.CHAPTER_ID, "1");
                 schedInfo.add(Schedule.END_CHAPTER_ID, "240");
                 Log.d("Schedule Create", "Launching async task...");

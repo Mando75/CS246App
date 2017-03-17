@@ -132,11 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView textView2 = new TextView(this);
             textView2.setText(schedules[i].getStartPos().get("book").getAsString() + " " +
-                    schedules[i].getStartPos().get("chapter").getAsString() + ": " +
-                    schedules[i].getStartPos().get("verse").getAsString() + " - " +
+                    schedules[i].getStartPos().get("chapter").getAsString() + " - " +
                     schedules[i].getEndPos().get("book").getAsString() + " " +
-                    schedules[i].getEndPos().get("chapter").getAsString() + ": " +
-                    schedules[i].getEndPos().get("verse").getAsString());
+                    schedules[i].getEndPos().get("chapter").getAsString());
             textView2.setId(View.generateViewId());
             textView2.setTextSize(18);
             textView2.setTypeface(Typeface.create("sans-serif", Typeface.ITALIC));

@@ -49,10 +49,8 @@ public class Schedule {
     public static final int READ_TIME = 3;
     public static final int START_BOOK = 4;
     public static final int START_CHAPTER = 5;
-    public static final int START_VERSE = 6;
     public static final int END_BOOK = 7;
     public static final int END_CHAPTER = 8;
-    public static final int END_VERSE = 9;
     public static final int CHAPTER_ID = 10;
     public static final int END_CHAPTER_ID = 11;
     private static final String TAG = "Schedule Class";
@@ -68,9 +66,9 @@ public class Schedule {
     public Schedule(List<String> scheduleInfo) {
 
         scheduleName = scheduleInfo.get(NAME);
-        buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
-        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), scheduleInfo.get(END_VERSE), Integer.parseInt(scheduleInfo.get(END_CHAPTER_ID)));
-        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE), Integer.parseInt(scheduleInfo.get(CHAPTER_ID)));
+        buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER));
+        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), Integer.parseInt(scheduleInfo.get(END_CHAPTER_ID)));
+        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER), Integer.parseInt(scheduleInfo.get(CHAPTER_ID)));
         try {
             startDate = (Date) formatter.parseObject(scheduleInfo.get(START_DATE));
         } catch (ParseException e) {
@@ -116,27 +114,24 @@ public class Schedule {
         mainSchedule.addProperty("endDate", dateEnd);
         mainSchedule.addProperty("frequency", remindHour);
     }
-    public void buildStart(String book, String chapter, String verse){
+    public void buildStart(String book, String chapter){
         startPos = null;
         startPos = new JsonObject();
         startPos.addProperty("book", book);
         startPos.addProperty("chapter", chapter);
-        startPos.addProperty("verse", verse);
     }
-    public void buildEnd(String book, String chapter, String verse, int chapId){
+    public void buildEnd(String book, String chapter, int chapId){
         endPos = null;
         endPos = new JsonObject();
         endPos.addProperty("book", book);
         endPos.addProperty("chapter", chapter);
-        endPos.addProperty("verse", verse);
         endPos.addProperty("chapId", chapId);
     }
-    public void buildCurrent(String book, String chapter, String verse, int chapId){
+    public void buildCurrent(String book, String chapter, int chapId){
         currentPos = null;
         currentPos = new JsonObject();
         currentPos.addProperty("book", book);
         currentPos.addProperty("chapter", chapter);
-        currentPos.addProperty("verse", verse);
         currentPos.addProperty("chapId", chapId);
     }
     public void loadFromFile(Context context, String filename){
