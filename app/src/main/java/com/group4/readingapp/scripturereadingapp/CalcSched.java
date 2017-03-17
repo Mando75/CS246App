@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -45,10 +46,11 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     private DailyReading[] readings;
     private Date startingDate;
     private Date endingDate;
+    private Date today;
     private int numDays;
     private int chapsToRead;
     private String filenameResave;
-    private int chapsPerDay;
+    private float chapsPerDay;
     private DailyReading reading;
     private DailyReading[] reads;
     private int k;
@@ -78,12 +80,17 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         bookToRef = new TreeMap<String, Integer>();
         startingDate = schedule.getStartDate();
         endingDate = schedule.getEndDate();
+        today = new Date();
         // find how many days are left to read.
-        long milli = endingDate.getTime() - startingDate.getTime();
+        long milli = endingDate.getTime() - System.currentTimeMillis();
         numDays = (int) TimeUnit.DAYS.convert(milli, TimeUnit.MILLISECONDS);
+        Log.d(TAG, "end: " + endingDate.getTime());
+        Log.d(TAG, "today: " + System.currentTimeMillis());
+        Log.d(TAG, "Number of Days: " + numDays);
         chapsToRead = schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt();
         // find how many chapters must be read daily
-        chapsPerDay = chapsToRead / numDays;
+        chapsPerDay = (float) chapsToRead / numDays;
+
         // create an array of readings
         readings = new DailyReading[numDays];
     }
@@ -140,7 +147,6 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
      */
     @Override
     protected Void doInBackground(Void... params) {
-
         Log.d(TAG, "Launching doInBackground");
         List<String> info = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
@@ -150,8 +156,10 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         /*
             In this section, we initialize the default values
         */
-        int startChap = schedule.getCurrentPos().get("chapId").getAsInt();
-        int endChap = startChap + chapsPerDay;
+        float startChapF = schedule.getCurrentPos().get("chapId").getAsInt();
+        int startChap = Math.round(startChapF);
+        float endChapF = startChap + chapsPerDay;
+        int endChap = Math.round(endChapF);
         String startBook = getChaptoBook(startChap);
         String endBook = getChaptoBook(endChap);
         Log.d(TAG, schedule.getEndPos().get("book").getAsString());
@@ -169,16 +177,18 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             info.set(DailyReading.START_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(startBook, startChap)));
             info.set(DailyReading.END_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(endBook, endChap)));
             // debug
-            Log.d(TAG, info.get(DailyReading.START_BOOK));
-            Log.d(TAG, info.get(DailyReading.START_CHAP));
-            Log.d(TAG, info.get(DailyReading.END_BOOK));
-            Log.d(TAG, info.get(DailyReading.END_CHAP));
+//            Log.d(TAG, info.get(DailyReading.START_BOOK));
+//            Log.d(TAG, info.get(DailyReading.START_CHAP));
+//            Log.d(TAG, info.get(DailyReading.END_BOOK));
+//            Log.d(TAG, info.get(DailyReading.END_CHAP));
             // add a new daily reading to the array
             readings[i] = new DailyReading(info);
 
             // update chapter and book values for the next iteration.
-            startChap = endChap;
-            endChap = startChap + chapsPerDay;
+            startChapF = endChapF;
+            endChapF = startChapF + chapsPerDay;
+            startChap = Math.round(startChapF);
+            endChap = Math.round(endChapF);
             startBook = getChaptoBook(startChap);
             endBook = getChaptoBook(endChap);
         }
@@ -251,7 +261,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             });
 
             TextView textView1 = new TextView(context);
-            textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + chapsPerDay + " chapters.");
+            textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(chapsPerDay) + " chapters.");
             textView1.setId(View.generateViewId());
             textView1.setTextSize(20);
             textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
