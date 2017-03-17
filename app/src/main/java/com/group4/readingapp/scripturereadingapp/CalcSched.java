@@ -210,7 +210,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             view.addView(card[i]);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)card[i].getLayoutParams();
             params.width = CardView.LayoutParams.MATCH_PARENT;
-            params.height = Math.round(90 * displayMetrics.density);
+            params.height = Math.round(55 * displayMetrics.density);
             params.setMargins(1,5,1,15);
             card[i].setLayoutParams(params);
             final CardView finalCard = card[i];
@@ -226,16 +226,6 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                 params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             innerLayout.setLayoutParams(params2);
 
-            TextView textView1 = new TextView(context);
-            textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + chapsPerDay + " chapters.");
-            textView1.setId(View.generateViewId());
-            textView1.setTextSize(25);
-            textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-            innerLayout.addView(textView1);
-            RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)textView1.getLayoutParams();
-            params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            textView1.setLayoutParams(params3);
 
             checkBox[i] = new CheckBox(context);
             innerLayout.addView(checkBox[i]);
@@ -259,6 +249,19 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
 
                 }
             });
+
+            TextView textView1 = new TextView(context);
+            textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + chapsPerDay + " chapters.");
+            textView1.setId(View.generateViewId());
+            textView1.setTextSize(20);
+            textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+            innerLayout.addView(textView1);
+            RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)textView1.getLayoutParams();
+            params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params3.addRule(RelativeLayout.LEFT_OF, checkBox[i].getId());
+            params3.addRule(RelativeLayout.CENTER_VERTICAL);
+            textView1.setLayoutParams(params3);
         }
     }
     public void removeCard(CardView card, DailyReading read){
