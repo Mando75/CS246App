@@ -242,18 +242,23 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         if (!name.getText().toString().equals("")) {
 
             if (validLocations) {
-                List<String> schedInfo = new ArrayList<>();
-                schedInfo.add(name.getText().toString());
-                schedInfo.add(startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
-                schedInfo.add(endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
+                List<String> schedInfo = new ArrayList<>(12);
+                for (int i = 0; i < 12; i++) {
+                    schedInfo.add("");
+                }
+                schedInfo.add(Schedule.NAME, name.getText().toString());
+                schedInfo.add(Schedule.START_DATE, startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
+                schedInfo.add(Schedule.END_DATE, endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
 //        schedInfo.add(readTime.getCurrentHour() + ":" + readTime.getCurrentMinute());
-                schedInfo.add("12:35");
-                schedInfo.add(startBook.getSelectedItem().toString());
-                schedInfo.add(startChap.getSelectedItem().toString().replace("Chapter ", ""));
-                schedInfo.add("20");
-                schedInfo.add(endBook.getSelectedItem().toString());
-                schedInfo.add(endChap.getSelectedItem().toString().replace("Chapter ", ""));
-                schedInfo.add("30");
+                schedInfo.add(Schedule.READ_TIME,"12:35");
+                schedInfo.add(Schedule.START_BOOK, startBook.getSelectedItem().toString());
+                schedInfo.add(Schedule.START_CHAPTER, startChap.getSelectedItem().toString().replace("Chapter ", ""));
+                schedInfo.add(Schedule.START_VERSE, "20");
+                schedInfo.add(Schedule.END_BOOK, endBook.getSelectedItem().toString());
+                schedInfo.add(Schedule.END_CHAPTER, endChap.getSelectedItem().toString().replace("Chapter ", ""));
+                schedInfo.add(Schedule.END_VERSE, "30");
+                schedInfo.add(Schedule.CHAPTER_ID, "1");
+                schedInfo.add(Schedule.END_CHAPTER_ID, "240");
                 Log.d("Schedule Create", "Launching async task...");
                 new CreateSchedule(schedInfo, context).execute();
                 scheduleNotifications();

@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         Schedule[] schedules = new Schedule[files.length];
         for(int i = 0; i < files.length; i++) {
             Log.d("File", files[i].getName());
+            final String filename = files[i].getName();
             schedules[i] = new Schedule();
             schedules[i].loadFromFile(getApplicationContext(), files[i].getName());
 
@@ -125,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
             cardViews[i].setContentPadding(10,10,10,10);
             cardViews[i].setId(View.generateViewId());
             cardViews[i].setClickable(true);
+            cardViews[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ScheduleViewer.class);
+                    intent.putExtra("filename", filename);
+                    startActivity(intent);
+                }
+            });
             layout.addView(cardViews[i]);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)cardViews[i].getLayoutParams();
             params.width = CardView.LayoutParams.MATCH_PARENT;
