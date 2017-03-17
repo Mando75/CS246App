@@ -6,17 +6,11 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,10 +43,8 @@ public class Schedule {
     public static final int READ_TIME = 3;
     public static final int START_BOOK = 4;
     public static final int START_CHAPTER = 5;
-    public static final int START_VERSE = 6;
     public static final int END_BOOK = 7;
     public static final int END_CHAPTER = 8;
-    public static final int END_VERSE = 9;
     public static final int CHAPTER_ID = 10;
     public static final int END_CHAPTER_ID = 11;
     private static final String TAG = "Schedule Class";
@@ -68,9 +60,9 @@ public class Schedule {
     public Schedule(List<String> scheduleInfo) {
 
         scheduleName = scheduleInfo.get(NAME);
-        buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE));
-        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), scheduleInfo.get(END_VERSE), Integer.parseInt(scheduleInfo.get(END_CHAPTER_ID)));
-        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER),scheduleInfo.get(START_VERSE), Integer.parseInt(scheduleInfo.get(CHAPTER_ID)));
+        buildStart(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER));
+        buildEnd(scheduleInfo.get(END_BOOK), scheduleInfo.get(END_CHAPTER), Integer.parseInt(scheduleInfo.get(END_CHAPTER_ID)));
+        buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER), Integer.parseInt(scheduleInfo.get(CHAPTER_ID)));
         try {
             startDate = (Date) formatter.parseObject(scheduleInfo.get(START_DATE));
         } catch (ParseException e) {
@@ -116,27 +108,24 @@ public class Schedule {
         mainSchedule.addProperty("endDate", dateEnd);
         mainSchedule.addProperty("frequency", remindHour);
     }
-    public void buildStart(String book, String chapter, String verse){
+    public void buildStart(String book, String chapter){
         startPos = null;
         startPos = new JsonObject();
         startPos.addProperty("book", book);
         startPos.addProperty("chapter", chapter);
-        startPos.addProperty("verse", verse);
     }
-    public void buildEnd(String book, String chapter, String verse, int chapId){
+    public void buildEnd(String book, String chapter, int chapId){
         endPos = null;
         endPos = new JsonObject();
         endPos.addProperty("book", book);
         endPos.addProperty("chapter", chapter);
-        endPos.addProperty("verse", verse);
         endPos.addProperty("chapId", chapId);
     }
-    public void buildCurrent(String book, String chapter, String verse, int chapId){
+    public void buildCurrent(String book, String chapter, int chapId){
         currentPos = null;
         currentPos = new JsonObject();
         currentPos.addProperty("book", book);
         currentPos.addProperty("chapter", chapter);
-        currentPos.addProperty("verse", verse);
         currentPos.addProperty("chapId", chapId);
     }
     public void loadFromFile(Context context, String filename){
@@ -169,14 +158,14 @@ public class Schedule {
             endDate = new Gson().fromJson(mainSchedule.get("endDate"), Date.class);
         if(!mainSchedule.get("frequency").isJsonNull())
             remindHour = new Gson().fromJson(mainSchedule.get("frequency"), Integer.class);
+
+
     }
     public void saveToFile(Context context, String filename){
     Log.d(TAG, "Launching Save File");
-//        Log.d(TAG, mainSchedule.getAsString());
         File file = new File(context.getFilesDir(), filename);
         try {
             FileOutputStream stream = new FileOutputStream(file);
-//            String test = "Test String";
             stream.write(mainSchedule.toString().getBytes());
             stream.close();
         } catch (FileNotFoundException e) {
@@ -186,16 +175,7 @@ public class Schedule {
             Log.d(TAG, "IO exception thrown");
             e.printStackTrace();
         }
-
-
-//        try {
-//        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
-//        outputStreamWriter.write(mainSchedule.toString());
-//        outputStreamWriter.close();
-//        }
-//        catch (IOException e) {
-//            Log.e("Exception", "File write failed: " + e.toString());
-//        }
+        Log.d(TAG, "loadFromFile: " + currentPos.toString());
     }
 
     public void displayScheduleConsole(){
