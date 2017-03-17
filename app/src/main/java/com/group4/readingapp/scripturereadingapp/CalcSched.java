@@ -3,19 +3,14 @@ package com.group4.readingapp.scripturereadingapp;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.support.annotation.StringDef;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +20,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by starw on 3/15/2017.
+ * A background task that populates a view with daily reading cards
+ * <p>A background task that takes a filename, a context and a layout.
+ * It will load a schedule object from the filename given, and break that
+ * file up into daily reading chunks. </p>
  * @author Bryan Muller
  * @version 0.5
+ *
  */
 
 public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
@@ -44,6 +44,16 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     private int chapsPerDay;
     private DailyReading reading;
 
+
+    /**
+     *  Default Constructor. The class MUST be passed the appropriate parameters.
+     *  <p>This class uses a navigable and normal map to index chapter to book, and book to
+     *  chapter relationships. Also contains an Array of DailyReadings </p>
+     *  @see DailyReading
+     * @param filename
+     * @param theContext
+     * @param layout
+     */
     public CalcSched(String filename, Context theContext, RelativeLayout layout) {
         schedule = new Schedule();
         schedule.loadFromFile(theContext, filename);
@@ -54,12 +64,22 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         bookToRef = new TreeMap<String, Integer>();
         startingDate = schedule.getStartDate();
         endingDate = schedule.getEndDate();
+        // find how many days are left to read.
         long milli = endingDate.getTime() - startingDate.getTime();
         numDays = (int) TimeUnit.DAYS.convert(milli, TimeUnit.MILLISECONDS);
         chapsToRead = schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt();
+        // find how many chapters must be read daily
         chapsPerDay = chapsToRead / numDays;
-        readings = null;
-        // build the chapToBook map
+        // create an array of readings
+        readings = new DailyReading[numDays];
+    }
+
+    /**
+     * This function builds the maps needed for the referencing of books and chapters
+     */
+    @Override
+    protected  void onPreExecute() {
+// build the chapToBook map
         chapToBook.put(1, "1 Nephi");
         chapToBook.put(23, "2 Nephi");
         chapToBook.put(56, "Jacob");
@@ -95,33 +115,37 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         bookToRef.put("Ether", 215);
         bookToRef.put("Moroni", 230);
         bookToRef.put("Invalid Chapter", null);
-
-        // create an array of readings
-        readings = new DailyReading[numDays];
-
     }
 
-    @Override
-    protected  void onPreExecute() {
-
-    }
-
+    /**
+     * runs through a loop to generate individual daily readings.
+     * gathers all the information into a list, uses it to create a DailyReading object,
+     * adds it to the array, and calls publish progress to update the ui when finished.
+     * @param params
+     * @return
+     */
     @Override
     protected Void doInBackground(Void... params) {
 
         Log.d(TAG, "Launching doInBackground");
-        List<String> info = new ArrayList<>(7);
-        for (int i = 0; i < 7; i++) {
+        List<String> info = new ArrayList<>(6);
+        for (int i = 0; i < 6; i++) {
             info.add("");
         }
-        int readPos = schedule.getCurrentPos().get("chapId").getAsInt();
-        readings = new DailyReading[numDays];
+
+        /*
+            In this section, we initialize the default values
+        */
         int startChap = schedule.getCurrentPos().get("chapId").getAsInt();
         int endChap = startChap + chapsPerDay;
         String startBook = getChaptoBook(startChap);
         String endBook = getChaptoBook(endChap);
         Log.d(TAG, schedule.getEndPos().get("book").getAsString());
         Log.d(TAG, schedule.getEndPos().get("chapter").getAsString());
+
+        /*
+        Now loop through and use them to create a DailyReading object
+         */
         for (int i = 0; i < numDays; i++) {
             info.set(DailyReading.START_CHAP, Integer.toString(startChap));
             info.set(DailyReading.END_CHAP, Integer.toString((endChap)));
@@ -129,22 +153,28 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             info.set(DailyReading.END_BOOK, endBook);
             info.set(DailyReading.START_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(startBook, startChap)));
             info.set(DailyReading.END_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(endBook, endChap)));
+            // debug
             Log.d(TAG, info.get(DailyReading.START_BOOK));
             Log.d(TAG, info.get(DailyReading.START_CHAP));
             Log.d(TAG, info.get(DailyReading.END_BOOK));
             Log.d(TAG, info.get(DailyReading.END_CHAP));
+            // add a new daily reading to the array
             readings[i] = new DailyReading(info);
+            // publishProgress? We might move this.
             publishProgress(readings[i]);
+            // update chapter and book values for the next iteration. 
             startChap = endChap;
             endChap = startChap + chapsPerDay;
             startBook = getChaptoBook(startChap);
             endBook = getChaptoBook(endChap);
         }
-
-
         return null;
     }
 
+    /**
+     * Used to update the UI with cards containing reading information.
+     * @param read
+     */
     @Override
     protected void onProgressUpdate(DailyReading... read) {
         DailyReading dailyReading = read[0];
@@ -184,10 +214,27 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
 
     }
 
+    /**
+     * receives a chapter index, and returns the name of the book
+     * that chapter is in.
+     * Example: chapter = 150;
+     * Result: Alma
+     * @param chapter
+     * @return
+     */
     public String getChaptoBook(int chapter) {
         return chapToBook.floorEntry(chapter).getValue();
     }
 
+    /**
+     * receives the name of a book and the chapter index, returns what relative chapter
+     * the id would be.
+     * Example: book = Alma chapter = 150
+     * Result: 54
+     * @param book
+     * @param chapter
+     * @return
+     */
     public int getBookToRef (String book, int chapter) {
         return chapter - bookToRef.get(book);
     }
