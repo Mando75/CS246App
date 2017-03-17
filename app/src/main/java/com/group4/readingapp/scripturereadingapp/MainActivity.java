@@ -49,17 +49,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         populateSchedules(files);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
     @Override
     public void onResume()
@@ -78,36 +69,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-//        NotificationCompat.Builder mBuilder =
-//                new NotificationCompat.Builder(this)
-//                        .setSmallIcon(R.drawable.ic_android_black_24dp)
-//                        .setContentTitle("My notification")
-//                        .setContentText("Hello World!");
-//        // Creates an explicit intent for an Activity in your app
-//        Intent resultIntent = new Intent(this, ResultActivity.class);
-//
-//        // The stack builder object will contain an artificial back stack for the
-//// started Activity.
-//// This ensures that navigating backward from the Activity leads out of
-//// your application to the Home screen.
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//// Adds the back stack for the Intent (but not the Intent itself)
-//        stackBuilder.addParentStack(ResultActivity.class);
-//// Adds the Intent that starts the Activity to the top of the stack
-//        stackBuilder.addNextIntent(resultIntent);
-//        PendingIntent resultPendingIntent =
-//                stackBuilder.getPendingIntent(
-//                        0,
-//                        PendingIntent.FLAG_UPDATE_CURRENT
-//                );
-//        int mId = 001;
-//        mBuilder.setContentIntent(resultPendingIntent);
-//        NotificationManager mNotificationManager =
-//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//// mId allows you to update the notification later on.
-//        mNotificationManager.notify(mId, mBuilder.build());
     public void populateSchedules(File[] files){
+
         RelativeLayout layout = (RelativeLayout) findViewById((R.id.cards));
+
+        layout.removeAllViews();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) MainActivity.this.getSystemService(Context.WINDOW_SERVICE);
@@ -194,6 +160,5 @@ public class MainActivity extends AppCompatActivity {
             checkBox.setLayoutParams(params5);
         }
     }
-
 
 }
