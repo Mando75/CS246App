@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         layout.removeAllViews();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) MainActivity.this.getSystemService(Context.WINDOW_SERVICE);
-        int m = Math.round(5 * displayMetrics.density);
+        final WindowManager windowManager = (WindowManager) MainActivity.this.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        int m = Math.round(5 * displayMetrics.density);
         CardView[] cardViews = new CardView[files.length];
         Schedule[] schedules = new Schedule[files.length];
         for(int i = 0; i < files.length; i++) {

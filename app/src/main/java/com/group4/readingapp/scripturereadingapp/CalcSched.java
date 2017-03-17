@@ -55,7 +55,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     private CardView[] card;
     private CheckBox[] checkBox;
     public Boolean restart = false;
-
+    private DisplayMetrics displayMetrics;
 
     /**
      *  Default Constructor. The class MUST be passed the appropriate parameters.
@@ -66,9 +66,10 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
      * @param theContext
      * @param layout
      */
-    public CalcSched(String filename, Context theContext, RelativeLayout layout) {
+    public CalcSched(String filename, Context theContext, RelativeLayout layout, DisplayMetrics displayMetrics) {
         schedule = new Schedule();
         filenameResave = filename;
+        this.displayMetrics = displayMetrics;
         schedule.loadFromFile(theContext, filename);
         context = theContext;
         view = layout;
@@ -197,6 +198,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         createCards(read);
     }
     public void createCards(DailyReading[] read){
+
         for(int i = 0; i < read.length; i++){
             k = i;
             DailyReading dailyReading = read[i];
@@ -208,7 +210,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             view.addView(card[i]);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)card[i].getLayoutParams();
             params.width = CardView.LayoutParams.MATCH_PARENT;
-            params.height = 240;
+            params.height = Math.round(90 * displayMetrics.density);
             params.setMargins(1,5,1,15);
             card[i].setLayoutParams(params);
             final CardView finalCard = card[i];
