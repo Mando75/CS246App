@@ -178,36 +178,41 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
      */
     @Override
     protected void onProgressUpdate(DailyReading... read) {
-        DailyReading dailyReading = read[0];
-        Toast toast = Toast.makeText(context, "Published progress!", Toast.LENGTH_SHORT);
-        toast.show();
-        CardView card = new CardView(context);
-        card.setCardElevation(15);
-        card.setContentPadding(10,10,10,10);
-        card.setId(View.generateViewId());
-        view.addView(card);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)card.getLayoutParams();
-        params.width = CardView.LayoutParams.MATCH_PARENT;
-        params.height = CardView.LayoutParams.WRAP_CONTENT;
-        params.setMargins(1,5,1,15);
-        card.setLayoutParams(params);
-        RelativeLayout innerLayout = new RelativeLayout(context);
-        card.addView(innerLayout);
-        FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)innerLayout.getLayoutParams();
-        params2.width = FrameLayout.LayoutParams.MATCH_PARENT;
-        params2.height = FrameLayout.LayoutParams.MATCH_PARENT;
-        innerLayout.setLayoutParams(params2);
+        CardView[] card = new CardView[read.length];
+        for(int i = 0; i < read.length; i++){
+            DailyReading dailyReading = read[i];
+            card[i] = new CardView(context);
+            card[i].setCardElevation(15);
+            card[i].setContentPadding(10,10,10,10);
+            card[i].setId(View.generateViewId());
+            view.addView(card[i]);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)card[i].getLayoutParams();
+            params.width = CardView.LayoutParams.MATCH_PARENT;
+            params.height = CardView.LayoutParams.WRAP_CONTENT;
+            params.setMargins(1,5,1,15);
+            card[i].setLayoutParams(params);
+            RelativeLayout innerLayout = new RelativeLayout(context);
+            card[i].addView(innerLayout);
+            FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)innerLayout.getLayoutParams();
+            params2.width = FrameLayout.LayoutParams.MATCH_PARENT;
+            params2.height = FrameLayout.LayoutParams.MATCH_PARENT;
+            if(i != 0)
+                params.addRule(RelativeLayout.BELOW,card[i-1].getId());
+            else
+                params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            innerLayout.setLayoutParams(params2);
 
-        TextView textView1 = new TextView(context);
-        textView1.setText(dailyReading.getStartBook() + " " + dailyReading.getStartChapRef());
-        textView1.setId(View.generateViewId());
-        textView1.setTextSize(25);
-        textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        innerLayout.addView(textView1);
-        RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)textView1.getLayoutParams();
-        params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        textView1.setLayoutParams(params3);
+            TextView textView1 = new TextView(context);
+            textView1.setText(dailyReading.getStartBook() + " " + dailyReading.getStartChapRef());
+            textView1.setId(View.generateViewId());
+            textView1.setTextSize(25);
+            textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+            innerLayout.addView(textView1);
+            RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)textView1.getLayoutParams();
+            params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            textView1.setLayoutParams(params3);
+        }
     }
 
     @Override
