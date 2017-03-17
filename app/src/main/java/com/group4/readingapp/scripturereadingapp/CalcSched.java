@@ -3,6 +3,7 @@ package com.group4.readingapp.scripturereadingapp;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.support.annotation.StringDef;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
@@ -107,35 +108,46 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+
         Log.d(TAG, "Launching doInBackground");
         List<String> info = new ArrayList<>(7);
         for (int i = 0; i < 7; i++) {
             info.add("");
         }
+        int readPos = schedule.getCurrentPos().get("chapId").getAsInt();
+        readings = new DailyReading[numDays];
+        int startChap = schedule.getCurrentPos().get("chapId").getAsInt();
+        int endChap = startChap + chapsPerDay;
+        String startBook = getChaptoBook(startChap);
+        String endBook = getChaptoBook(endChap);
+        Log.d(TAG, schedule.getEndPos().get("book").getAsString());
+        Log.d(TAG, schedule.getEndPos().get("chapter").getAsString());
+        for (int i = 0; i < numDays; i++) {
+            info.set(DailyReading.START_CHAP, Integer.toString(startChap));
+            info.set(DailyReading.END_CHAP, Integer.toString((endChap)));
+            info.set(DailyReading.START_BOOK, startBook);
+            info.set(DailyReading.END_BOOK, endBook);
+            info.set(DailyReading.START_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(startBook, startChap)));
+            info.set(DailyReading.END_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(endBook, endChap)));
+            Log.d(TAG, info.get(DailyReading.START_BOOK));
+            Log.d(TAG, info.get(DailyReading.START_CHAP));
+            Log.d(TAG, info.get(DailyReading.END_BOOK));
+            Log.d(TAG, info.get(DailyReading.END_CHAP));
+            readings[i] = new DailyReading(info);
+            publishProgress(readings[i]);
+            startChap = endChap;
+            endChap = startChap + chapsPerDay;
+            startBook = getChaptoBook(startChap);
+            endBook = getChaptoBook(endChap);
+        }
 
-        info.set(DailyReading.START_BOOK, schedule.getCurrentPos().get("book").getAsString());
-        Log.d(TAG, "added startbook");
-        info.set(DailyReading.START_CHAP, schedule.getCurrentPos().get("chapId").getAsString());
-        Log.d(TAG, "added start chap");
-        int endChapId = schedule.getCurrentPos().get("chapId").getAsInt() + chapsPerDay;
-        info.set(DailyReading.END_BOOK, getChaptoBook(endChapId));
-        Log.d(TAG, "added endbook");
-        info.set(DailyReading.END_CHAP, Integer.toString(endChapId));
-        Log.d(TAG, "added endchap");
-        info.set(DailyReading.START_CHAP_REF, "Chapter " + getBookToRef(info.get(DailyReading.START_BOOK), Integer.parseInt(info.get(DailyReading.START_CHAP))));
-        Log.d(TAG, "Set Start chap pref");
-        info.set(DailyReading.END_CHAP_REF, "Chapter " + getBookToRef(info.get(DailyReading.END_BOOK), endChapId));
-        Log.d(TAG, "Set endchap ref");
-
-        reading = new DailyReading(info);
-        Log.d(TAG, "created dailyreading object");
-        publishProgress(reading);
 
         return null;
     }
 
     @Override
-    protected void onProgressUpdate(DailyReading... readings) {
+    protected void onProgressUpdate(DailyReading... read) {
+        DailyReading dailyReading = read[0];
         Toast toast = Toast.makeText(context, "Published progress!", Toast.LENGTH_SHORT);
         toast.show();
         CardView card = new CardView(context);
@@ -156,7 +168,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         innerLayout.setLayoutParams(params2);
 
         TextView textView1 = new TextView(context);
-        textView1.setText(reading.getStartBook());
+        textView1.setText(dailyReading.getStartBook() + " " + dailyReading.getStartChapRef());
         textView1.setId(View.generateViewId());
         textView1.setTextSize(25);
         textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
@@ -177,7 +189,6 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     }
 
     public int getBookToRef (String book, int chapter) {
-        Log.d(TAG, "getBook to Ref" + book + chapter);
         return chapter - bookToRef.get(book);
     }
 }
