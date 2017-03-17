@@ -12,7 +12,8 @@
     <string name="creator_startLocation">Pick your starting Book and Chapter:</string>
     <string name="creator_create">Create</string>
     <string name="creator_endLocation">Pick your ending Book and Chapter:</string>
-    <string name="reading_dialog">Pick your notification time</string>
+    <string name="enable_notifi">Enable Notifications</string>
+    <string name="disable_notifi">Disable Notifications</string>
 
     <string-array name="bomBooks">
         <item>1 Nephi</item>
@@ -38,5 +39,6 @@
     <string name="action_settings">Settings</string>
     <string name="schedView">Schedule View</string>
     <string name="dayRead">Today\'s Reading is:</string>
+    <string name="title_activity_enable_notifications">EnableNotifications</string>
 
 </resources>

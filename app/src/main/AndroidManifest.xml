@@ -30,11 +30,13 @@
             android:label="@string/title_activity_result"
             android:theme="@style/FullscreenTheme" />
 
-        <receiver android:name=".NotificationReceiver" />
-
         <activity
             android:name=".ScheduleViewer"
-            android:label="@string/schedView"></activity>
+            android:label="@string/schedView" />
+        <activity
+            android:name=".EnableNotifications"
+            android:label="@string/title_activity_enable_notifications"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

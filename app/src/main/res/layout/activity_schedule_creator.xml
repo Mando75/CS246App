@@ -85,24 +85,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/reading_dialog"
-            android:layout_below="@id/endDatePicker"
-            android:id="@+id/reading_dialog"/>
-
-        <TimePicker
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/time_picker"
-            android:layout_below="@id/reading_dialog"/>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/time_picker"
+            android:layout_below="@id/endDatePicker"
             android:paddingTop="5dp"
             android:orientation="vertical">
 
