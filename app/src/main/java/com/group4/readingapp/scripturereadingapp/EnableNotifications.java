@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 public class EnableNotifications extends AppCompatActivity {
 
@@ -21,6 +22,7 @@ public class EnableNotifications extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,16 +31,21 @@ public class EnableNotifications extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
     }
 
     public void enableNotify(View v){
-        IntentFilter intentf = new IntentFilter();
+        IntentFilter intent = new IntentFilter("android.intent.action.NotificationReceiver.class");
 
-        registerReceiver(receiver, intentf);
+        registerReceiver(receiver, intent);
+
+        Toast.makeText(getApplicationContext(),"Notifications enabled!", Toast.LENGTH_SHORT);
     }
 
     public void disableNotify(View v){
+
         unregisterReceiver(receiver);
+        Toast.makeText(getApplicationContext(), "Notifications disabled!", Toast.LENGTH_SHORT);
     }
 
 }

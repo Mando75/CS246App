@@ -14,6 +14,7 @@
     <string name="creator_endLocation">Pick your ending Book and Chapter:</string>
     <string name="enable_notifi">Enable Notifications</string>
     <string name="disable_notifi">Disable Notifications</string>
+    <string name="notifyCall">Control Notifications</string>
 
     <string-array name="bomBooks">
         <item>1 Nephi</item>

@@ -140,4 +140,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void controlNotifications(View v){
+        Intent intent = new Intent(getApplicationContext(), EnableNotifications.class);
+        startActivity(intent);
+    }
+
 }
