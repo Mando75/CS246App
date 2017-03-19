@@ -7,21 +7,46 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.group4.readingapp.scripturereadingapp.EnableNotifications">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enable_notifi"
-        android:onClick="enableNotify"
-        tools:layout_editor_absoluteY="214dp"
-        tools:layout_editor_absoluteX="101dp">
-    </Button>
+    <RelativeLayout
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        tools:layout_editor_absoluteX="-12dp"
+        tools:layout_editor_absoluteY="-11dp">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/disable_notifi"
-        android:onClick="disableNotify"
-        tools:layout_editor_absoluteY="298dp"
-        tools:layout_editor_absoluteX="99dp" />
+        <Button
+            android:id="@+id/enableNotify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="enableNotify"
+            android:text="@string/enable_notifi"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/disableNotify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="disableNotify"
+            android:text="@string/disable_notifi"
+            android:layout_below="@+id/enableNotify"
+            android:layout_alignStart="@+id/enableNotify"
+            android:layout_marginTop="33dp" />
+    </RelativeLayout>
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/enable_notifi"-->
+        <!--android:onClick="enableNotify"-->
+        <!--tools:layout_editor_absoluteY="214dp"-->
+        <!--tools:layout_editor_absoluteX="101dp">-->
+    <!--</Button>-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/disable_notifi"-->
+        <!--android:onClick="disableNotify"-->
+        <!--tools:layout_editor_absoluteY="298dp"-->
+        <!--tools:layout_editor_absoluteX="99dp" />-->
 
 </android.support.constraint.ConstraintLayout>
