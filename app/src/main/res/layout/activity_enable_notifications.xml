@@ -13,24 +13,26 @@
         tools:layout_editor_absoluteX="-12dp"
         tools:layout_editor_absoluteY="-11dp">
 
-        <Button
-            android:id="@+id/enableNotify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="enableNotify"
-            android:text="@string/enable_notifi"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+    <TimePicker
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:id="@+id/timer"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="181dp">
 
-        <Button
-            android:id="@+id/disableNotify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="disableNotify"
-            android:text="@string/disable_notifi"
-            android:layout_below="@+id/enableNotify"
-            android:layout_alignStart="@+id/enableNotify"
-            android:layout_marginTop="33dp" />
+    </TimePicker>
+
+    <Button
+        android:id="@+id/enableNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="enableNotify"
+        android:text="@string/enable_notifi"
+        android:layout_below="@+id/timer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="63dp" />
+
     </RelativeLayout>
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->

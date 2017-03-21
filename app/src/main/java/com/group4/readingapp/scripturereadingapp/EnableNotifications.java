@@ -1,6 +1,9 @@
 package com.group4.readingapp.scripturereadingapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -9,11 +12,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class EnableNotifications extends AppCompatActivity {
 
-    private BroadcastReceiver receiver = new NotificationReceiver();
+    private TimePicker timePicker;
+    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +28,9 @@ public class EnableNotifications extends AppCompatActivity {
         setContentView(R.layout.activity_enable_notifications);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        timePicker = (TimePicker) findViewById(R.id.timer);
+        timePicker.setIs24HourView(true);
+        receiver = new NotificationReceiver();
 
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -35,17 +45,29 @@ public class EnableNotifications extends AppCompatActivity {
     }
 
     public void enableNotify(View v){
-        IntentFilter intent = new IntentFilter("android.intent.action.NotificationReceiver.class");
 
-        registerReceiver(receiver, intent);
+        Calendar c = Calendar.getInstance();
 
-        Toast.makeText(getApplicationContext(),"Notifications enabled!", Toast.LENGTH_SHORT);
+        c.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+        c.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+
+        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 100, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pi);
+
+
+        Toast t = Toast.makeText(getApplicationContext(),"Notifications enabled!", Toast.LENGTH_SHORT);
+        t.show();
     }
 
     public void disableNotify(View v){
-
         unregisterReceiver(receiver);
-        Toast.makeText(getApplicationContext(), "Notifications disabled!", Toast.LENGTH_SHORT);
+
+        Toast t = Toast.makeText(getApplicationContext(), "Notifications disabled!", Toast.LENGTH_SHORT);
+        t.show();
     }
 
 }

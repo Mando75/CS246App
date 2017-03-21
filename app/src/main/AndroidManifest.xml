@@ -36,7 +36,13 @@
         <activity
             android:name=".EnableNotifications"
             android:label="@string/title_activity_enable_notifications"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <receiver android:name=".NotificationReceiver">
+
+        </receiver>
     </application>
 
 </manifest>

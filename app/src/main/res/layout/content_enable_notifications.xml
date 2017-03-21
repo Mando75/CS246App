@@ -14,25 +14,26 @@
         tools:layout_editor_absoluteX="-12dp"
         tools:layout_editor_absoluteY="-11dp">
 
+        <TimePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timer"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true">
+
+        </TimePicker>
+
         <Button
             android:id="@+id/enableNotify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="enableNotify"
             android:text="@string/enable_notifi"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/toolbarNote"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="82dp"
+            android:layout_marginBottom="30dp" />
 
-        <Button
-            android:id="@+id/disableNotify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="disableNotify"
-            android:text="@string/disable_notifi"
-            android:layout_below="@+id/enableNotify"
-            android:layout_alignStart="@+id/enableNotify"
-            android:layout_marginTop="33dp" />
     </RelativeLayout>
 
 

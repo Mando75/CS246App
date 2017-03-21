@@ -256,7 +256,6 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                 schedInfo.add(Schedule.END_CHAPTER_ID, "240");
                 Log.d("Schedule Create", "Launching async task...");
                 new CreateSchedule(schedInfo, context).execute();
-                scheduleNotifications();
                 finish();
             } else {
                 Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the info you provided.", Toast.LENGTH_SHORT);
@@ -266,20 +265,6 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
             Toast toast = Toast.makeText(context, "Something seems to be wrong... Please check the name you entered", Toast.LENGTH_SHORT);
             toast.show();
         }
-        scheduleNotifications();
-    }
-    public void scheduleNotifications(){
-        Calendar c = Calendar.getInstance();
-
-        c.set(Calendar.HOUR_OF_DAY, 16);
-        c.set(Calendar.MINUTE, 0);
-
-        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 100, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pi);
     }
 
 }
