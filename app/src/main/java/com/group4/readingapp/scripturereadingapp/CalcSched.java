@@ -59,6 +59,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     private Boolean finished;
     public Boolean restart = false;
     private DisplayMetrics displayMetrics;
+    private ScheduleViewer theActivity;
 
     /**
      *  Default Constructor. The class MUST be passed the appropriate parameters.
@@ -69,7 +70,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
      * @param theContext
      * @param layout
      */
-    public CalcSched(String filename, Context theContext, RelativeLayout layout, DisplayMetrics displayMetrics) {
+    public CalcSched(String filename, Context theContext, RelativeLayout layout, DisplayMetrics displayMetrics, ScheduleViewer theActivity) {
         schedule = new Schedule();
         filenameResave = filename;
         this.displayMetrics = displayMetrics;
@@ -77,6 +78,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         finished = schedule.isFinished();
         Log.d(TAG, "CalcSched: " + finished);
         context = theContext;
+        this.theActivity = theActivity;
         view = layout;
         reading = new DailyReading();
         chapToBook = new TreeMap<Integer, String>();
@@ -265,7 +267,8 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                         if ( isChecked )
                         {
                             Log.d(TAG, "onCheckedChanged: " + finalReading.getEndBook() + " " + finalReading.getEndChapRef());
-                            removeCard(finalCard, finalReading);
+                            removeCard(finalReading);
+                            theActivity.completed(finished);
                         }
 
                     }
@@ -286,11 +289,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             }
             save();
     }
-    public void removeCard(CardView card, DailyReading read){
-        CardView cardView = (CardView) view.findViewById(card.getId());
-        RelativeLayout layout = (RelativeLayout) cardView.getParent();
-        layout.removeView(cardView);
-        Log.d(TAG, "removeCard: " + read.getEndBook() + " " + read.getEndChap());
+    public void removeCard(DailyReading read){
         schedule.buildCurrent(read.getEndBook(), read.getEndChapRef().replace("Chapter ", ""), read.getEndChap());
         if((schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt()) < 1){
             finished = true;
@@ -300,7 +299,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         schedule.buildJson();
         schedule.saveToFile(context, filenameResave);
         Log.d(TAG, "onCheckedChanged: Item Removed");
-        restart = true;
+
     }
     public void save(){
         if((schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt()) < 1){

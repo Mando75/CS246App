@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 public class ScheduleViewer extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +20,18 @@ public class ScheduleViewer extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         final WindowManager windowManager = (WindowManager) ScheduleViewer.this.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        CalcSched calc = new CalcSched(filename, this, layout, displayMetrics);
+        CalcSched calc = new CalcSched(filename, this, layout, displayMetrics,ScheduleViewer.this);
         calc.execute();
+    }
+    public void completed(Boolean finished){
+        if (!finished){
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+        else{
+            finish();
+        }
+
     }
 }
