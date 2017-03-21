@@ -52,6 +52,7 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     protected Button createButton;
     protected ScrollView view;
     private boolean validLocations;
+    public static final String TAG = ScheduleCreator.class.getSimpleName();
 
     /**
      *
@@ -244,8 +245,11 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                     schedInfo.add("");
                 }
                 schedInfo.add(Schedule.NAME, name.getText().toString());
-                schedInfo.add(Schedule.START_DATE, startDate.getYear() + "-" + startDate.getMonth() + "-" + startDate.getDayOfMonth());
-                schedInfo.add(Schedule.END_DATE, endDate.getYear() + "-" + endDate.getMonth() + "-" + endDate.getDayOfMonth());
+                schedInfo.add(Schedule.START_DATE, startDate.getYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDayOfMonth());
+
+                schedInfo.add(Schedule.END_DATE, endDate.getYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDayOfMonth());
+                Log.d(TAG, "createSchedule: start date = " + schedInfo.get(Schedule.START_DATE));
+                Log.d(TAG, "createSchedule: end date = " + schedInfo.get(Schedule.END_DATE));
 //        schedInfo.add(readTime.getCurrentHour() + ":" + readTime.getCurrentMinute());
                 schedInfo.add(Schedule.READ_TIME,"12:35");
                 schedInfo.add(Schedule.START_BOOK, startBook.getSelectedItem().toString());

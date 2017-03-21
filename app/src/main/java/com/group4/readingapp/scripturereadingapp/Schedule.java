@@ -35,7 +35,9 @@ public class Schedule {
     private JsonObject currentPos;
     private Integer remindHour;
     private Date startDate;
+    private Date lastModified;
     private Date endDate;
+    private Boolean finished;
     // constants for the list indexes
     public static final int NAME = 0;
     public static final int START_DATE = 1;
@@ -65,6 +67,7 @@ public class Schedule {
         buildCurrent(scheduleInfo.get(START_BOOK), scheduleInfo.get(START_CHAPTER), Integer.parseInt(scheduleInfo.get(CHAPTER_ID)));
         try {
             startDate = (Date) formatter.parseObject(scheduleInfo.get(START_DATE));
+            lastModified = startDate;
         } catch (ParseException e) {
             Log.d(TAG, "Schedule: Error parsing start Date in constructor");
             e.printStackTrace();
@@ -75,6 +78,7 @@ public class Schedule {
             Log.d(TAG, "Schedule: Error parsing end Date in constructor");
             e.printStackTrace();
         }
+        finished = false;
         buildJson();
     }
 
@@ -87,6 +91,11 @@ public class Schedule {
     public void setEndDate(Date endDate) {this.endDate = endDate;}
     public void setFrequency(Integer frequency) {this.remindHour = frequency;}
     public void setStartDate(Date startDate) {this.startDate = startDate;}
+    public void setLastModified(Date modifiedDate) {
+
+        this.lastModified = modifiedDate;
+    }
+    public void setFinished(Boolean finished){this.finished = finished;}
     //getters
     public Date getStartDate() {return startDate;}
     public JsonObject getCurrentPos() {return currentPos;}
@@ -95,6 +104,8 @@ public class Schedule {
     public JsonObject getMainSchedule() {return mainSchedule;}
     public JsonObject getStartPos() {return startPos;}
     public Integer getFrequency() {return remindHour;}
+    public Date getLastModified() {return lastModified;}
+    public Boolean isFinished() {return finished;}
 
 
     public void buildJson(){
@@ -106,7 +117,10 @@ public class Schedule {
         mainSchedule.addProperty("startDate", dateStart);
         String dateEnd = formatter.format(endDate);
         mainSchedule.addProperty("endDate", dateEnd);
+        String dateLast = formatter.format(lastModified);
+        mainSchedule.addProperty("lastModifiedDate", dateLast);
         mainSchedule.addProperty("frequency", remindHour);
+        mainSchedule.addProperty("finished", isFinished());
     }
     public void buildStart(String book, String chapter){
         startPos = null;
@@ -156,8 +170,12 @@ public class Schedule {
             startDate = new Gson().fromJson(mainSchedule.get("startDate"), Date.class);
         if(!mainSchedule.get("endDate").isJsonNull())
             endDate = new Gson().fromJson(mainSchedule.get("endDate"), Date.class);
+        if(!mainSchedule.get("lastModifiedDate").isJsonNull())
+            lastModified = new Gson().fromJson(mainSchedule.get("lastModifiedDate"), Date.class);
         if(!mainSchedule.get("frequency").isJsonNull())
             remindHour = new Gson().fromJson(mainSchedule.get("frequency"), Integer.class);
+        if(!mainSchedule.get("finished").isJsonNull())
+            finished = new Gson().fromJson(mainSchedule.get("finished"), Boolean.class);
 
 
     }

@@ -22,7 +22,7 @@ import java.io.FilenameFilter;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    private static String TAG = "Main Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,68 +75,72 @@ public class MainActivity extends AppCompatActivity {
             final String filename = files[i].getName();
             schedules[i] = new Schedule();
             schedules[i].loadFromFile(getApplicationContext(), files[i].getName());
+            Log.d(TAG, "populateSchedules: " + schedules[i].isFinished());
+            if(!schedules[i].isFinished()) {
+                cardViews[i] = new CardView(this);
+                cardViews[i].setCardElevation(15);
+                cardViews[i].setContentPadding(10, 10, 10, 10);
+                cardViews[i].setId(View.generateViewId());
+                cardViews[i].setClickable(true);
+                cardViews[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, ScheduleViewer.class);
+                        intent.putExtra("filename", filename);
+                        startActivity(intent);
+                    }
+                });
+                layout.addView(cardViews[i]);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) cardViews[i].getLayoutParams();
+                params.width = CardView.LayoutParams.MATCH_PARENT;
+                params.height = Math.round(90 * displayMetrics.density);
+                params.setMargins(1, 5, 1, 15);
+                if (i != 0)
+                    params.addRule(RelativeLayout.BELOW, cardViews[i - 1].getId());
+                else
+                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                cardViews[i].setLayoutParams(params);
 
-            cardViews[i] = new CardView(this);
-            cardViews[i].setCardElevation(15);
-            cardViews[i].setContentPadding(10,10,10,10);
-            cardViews[i].setId(View.generateViewId());
-            cardViews[i].setClickable(true);
-            cardViews[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, ScheduleViewer.class);
-                    intent.putExtra("filename", filename);
-                    startActivity(intent);
-                }
-            });
-            layout.addView(cardViews[i]);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)cardViews[i].getLayoutParams();
-            params.width = CardView.LayoutParams.MATCH_PARENT;
-            params.height = Math.round(90 * displayMetrics.density);
-            params.setMargins(1,5,1,15);
-            if(i != 0)
-                params.addRule(RelativeLayout.BELOW,cardViews[i-1].getId());
-            else
-                params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            cardViews[i].setLayoutParams(params);
+                RelativeLayout innerLayout = new RelativeLayout(this);
+                cardViews[i].addView(innerLayout);
+                FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) innerLayout.getLayoutParams();
+                params2.width = FrameLayout.LayoutParams.MATCH_PARENT;
+                params2.height = FrameLayout.LayoutParams.MATCH_PARENT;
+                innerLayout.setLayoutParams(params2);
 
-            RelativeLayout innerLayout = new RelativeLayout(this);
-            cardViews[i].addView(innerLayout);
-            FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)innerLayout.getLayoutParams();
-            params2.width = FrameLayout.LayoutParams.MATCH_PARENT;
-            params2.height = FrameLayout.LayoutParams.MATCH_PARENT;
-            innerLayout.setLayoutParams(params2);
+                TextView textView1 = new TextView(this);
+                textView1.setText(files[i].getName().replace(".json", "").replaceAll("[_]", " "));
+                textView1.setId(View.generateViewId());
+                textView1.setTextSize(25);
+                textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+                innerLayout.addView(textView1);
+                RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) textView1.getLayoutParams();
+                params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                params3.setMargins(m, m, m, m);
+                textView1.setLayoutParams(params3);
 
-            TextView textView1 = new TextView(this);
-            textView1.setText(files[i].getName().replace(".json", "").replaceAll("[_]", " "));
-            textView1.setId(View.generateViewId());
-            textView1.setTextSize(25);
-            textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-            innerLayout.addView(textView1);
-            RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)textView1.getLayoutParams();
-            params3.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params3.setMargins(m,m,m,m);
-            textView1.setLayoutParams(params3);
-
-            TextView textView2 = new TextView(this);
-            textView2.setText(schedules[i].getStartPos().get("book").getAsString() + " " +
-                    schedules[i].getStartPos().get("chapter").getAsString() + " - " +
-                    schedules[i].getEndPos().get("book").getAsString() + " " +
-                    schedules[i].getEndPos().get("chapter").getAsString());
-            textView2.setId(View.generateViewId());
-            textView2.setTextSize(18);
-            textView2.setTypeface(Typeface.create("sans-serif", Typeface.ITALIC));
-            innerLayout.addView(textView2);
-            RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams)textView2.getLayoutParams();
-            params4.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params4.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-            params4.addRule(RelativeLayout.BELOW, textView1.getId());
-            params4.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            params4.setMargins(5,5,5,5);
-            textView2.setLayoutParams(params4);
-
-
+                TextView textView2 = new TextView(this);
+                textView2.setText(schedules[i].getStartPos().get("book").getAsString() + " " +
+                        schedules[i].getStartPos().get("chapter").getAsString() + " - " +
+                        schedules[i].getEndPos().get("book").getAsString() + " " +
+                        schedules[i].getEndPos().get("chapter").getAsString());
+                textView2.setId(View.generateViewId());
+                textView2.setTextSize(18);
+                textView2.setTypeface(Typeface.create("sans-serif", Typeface.ITALIC));
+                innerLayout.addView(textView2);
+                RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) textView2.getLayoutParams();
+                params4.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                params4.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                params4.addRule(RelativeLayout.BELOW, textView1.getId());
+                params4.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                params4.setMargins(5, 5, 5, 5);
+                textView2.setLayoutParams(params4);
+            }
+            else{
+                files[i].delete();
+                Log.d(TAG, "populateSchedules: " + "removed file");
+            }
         }
     }
 
