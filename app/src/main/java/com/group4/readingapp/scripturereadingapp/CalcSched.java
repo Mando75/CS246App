@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
@@ -61,6 +62,9 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
     private DisplayMetrics displayMetrics;
     private ScheduleViewer theActivity;
 
+    public CalcSched(){
+        //default constructor for base calculations.
+    }
     /**
      *  Default Constructor. The class MUST be passed the appropriate parameters.
      *  <p>This class uses a navigable and normal map to index chapter to book, and book to

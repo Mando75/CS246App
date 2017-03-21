@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
+import static java.lang.Integer.parseInt;
+import static java.lang.StrictMath.abs;
 
 /**
  * @author Bryan Muller, Jonathon Fidiam, Loren Miller
@@ -53,6 +59,9 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
     protected ScrollView view;
     private boolean validLocations;
     public static final String TAG = ScheduleCreator.class.getSimpleName();
+
+    protected NavigableMap<Integer, String> chapToBook;
+    protected Map<String, Integer> bookToRef;
 
     /**
      *
@@ -237,6 +246,8 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
      *
      */
     public void createSchedule(View view) {
+
+        setUpBookChapMaps();
         if (!name.getText().toString().equals("")) {
 
             if (validLocations) {
@@ -256,8 +267,12 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                 schedInfo.add(Schedule.START_CHAPTER, startChap.getSelectedItem().toString().replace("Chapter ", ""));
                 schedInfo.add(Schedule.END_BOOK, endBook.getSelectedItem().toString());
                 schedInfo.add(Schedule.END_CHAPTER, endChap.getSelectedItem().toString().replace("Chapter ", ""));
-                schedInfo.add(Schedule.CHAPTER_ID, "1");
-                schedInfo.add(Schedule.END_CHAPTER_ID, "240");
+                Log.d(TAG, "createSchedule: " + startBook.getSelectedItem().toString());
+                int startID = getBookToRef(startBook.getSelectedItem().toString(), Integer.parseInt(startChap.getSelectedItem().toString().replace("Chapter ", "")));
+                Log.d(TAG, "createSchedule: " + startID);
+                schedInfo.add(Schedule.CHAPTER_ID, Integer.toString(startID));
+                int endID = getBookToRef(endBook.getSelectedItem().toString(), Integer.parseInt(endChap.getSelectedItem().toString().replace("Chapter ", "")));
+                schedInfo.add(Schedule.END_CHAPTER_ID, Integer.toString(endID));
                 Log.d("Schedule Create", "Launching async task...");
                 new CreateSchedule(schedInfo, context).execute();
                 finish();
@@ -270,6 +285,54 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
             toast.show();
         }
     }
+    public void setUpBookChapMaps(){
+    // build the chapToBook map
 
+        chapToBook = new TreeMap<Integer, String>();
+        bookToRef = new TreeMap<String, Integer>();
+
+        chapToBook.put(1, "1 Nephi");
+        chapToBook.put(23, "2 Nephi");
+        chapToBook.put(56, "Jacob");
+        chapToBook.put(64, "Enos");
+        chapToBook.put(65, "Jarom");
+        chapToBook.put(66, "Omni");
+        chapToBook.put(67, "Words of Mormon");
+        chapToBook.put(68, "Mosiah");
+        chapToBook.put(97, "Alma");
+        chapToBook.put(160, "Helaman");
+        chapToBook.put(176, "3 Nephi");
+        chapToBook.put(206, "4 Nephi");
+        chapToBook.put(207, "Mormon");
+        chapToBook.put(216, "Ether");
+        chapToBook.put(231, "Moroni");
+        chapToBook.put(241, "Invalid Chapter");
+
+
+    // build the bookToRef map
+        bookToRef.put("1 Nephi", 0);
+        bookToRef.put("2 Nephi", 22);
+        bookToRef.put("Jacob", 55);
+        bookToRef.put("Enos", 63);
+        bookToRef.put("Jarom", 64);
+        bookToRef.put("Omni", 65);
+        bookToRef.put("Words of Mormon", 66);
+        bookToRef.put("Mosiah", 67);
+        bookToRef.put("Alma", 96);
+        bookToRef.put("Helaman", 159);
+        bookToRef.put("3 Nephi", 175);
+        bookToRef.put("4 Nephi", 205);
+        bookToRef.put("Mormon", 206);
+        bookToRef.put("Ether", 215);
+        bookToRef.put("Moroni", 230);
+        bookToRef.put("Invalid Chapter", null);}
+
+    public int getBookToRef (String book, int chapter) {
+        return chapter + bookToRef.get(book);
+    }
+
+    public String getChaptoBook(int chapter) {
+        return chapToBook.floorEntry(chapter).getValue();
+    }
 }
 
