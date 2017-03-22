@@ -158,6 +158,7 @@ public class Schedule {
         } catch (IOException e) {
             Log.e("Loading File", "Can not read file: " + e.toString());
         }
+        finished = false;
         mainSchedule = null;
         mainSchedule = new Gson().fromJson(ret, JsonObject.class);
         if(!mainSchedule.get("startPos").isJsonNull())

@@ -262,7 +262,6 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                 params4.addRule(RelativeLayout.CENTER_VERTICAL);
                 params4.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 params4.setMarginEnd(19);
-                checkBox[i].setLayoutParams(params4);
                 checkBox[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
                 {
                     @Override
@@ -289,6 +288,8 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                 params3.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 params3.addRule(RelativeLayout.LEFT_OF, checkBox[i].getId());
                 params3.addRule(RelativeLayout.CENTER_VERTICAL);
+                params3.setMarginEnd(200);
+                checkBox[i].setLayoutParams(params4);
                 textView1.setLayoutParams(params3);
             }
             save();
