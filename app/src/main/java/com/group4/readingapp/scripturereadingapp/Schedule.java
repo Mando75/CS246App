@@ -106,6 +106,7 @@ public class Schedule {
     public Integer getFrequency() {return remindHour;}
     public Date getLastModified() {return lastModified;}
     public Boolean isFinished() {return finished;}
+    public String getScheduleName() {return scheduleName;}
 
 
     public void buildJson(){
