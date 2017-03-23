@@ -278,7 +278,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                 });
 
                 TextView textView1 = new TextView(context);
-                textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(chapsPerDay) + " chapters.");
+                textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(dailyReading.getEndChap() - dailyReading.getStartChap()) + " chapter(s).");
                 textView1.setId(View.generateViewId());
                 textView1.setTextSize(20);
                 textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));

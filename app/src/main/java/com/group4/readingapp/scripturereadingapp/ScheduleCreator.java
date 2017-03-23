@@ -84,6 +84,7 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         endChap = (Spinner) findViewById(R.id.schedChaptersEnd);
         startBook.setOnItemSelectedListener(this);
         endBook.setOnItemSelectedListener(this);
+        endBook.setSelection(14);
         name = (EditText) findViewById(R.id.schedNameInput);
         startDate = (DatePicker) findViewById(R.id.startDatePicker);
         endDate = (DatePicker) findViewById((R.id.endDatePicker));
@@ -99,9 +100,6 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
             }
         });
         validLocations = true;
-        endBook.setSelection(14);
-        endChap.setSelection(9);
-
     }
 
     /**
@@ -126,7 +124,7 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
         startChap.setAdapter(null);
         endChap.setAdapter(null);
         startChapter = chapterMaker(startingBook);
-        endChapter = chapterMaker(endingBook);
+        endChapter = endChapterMaker(endingBook);
         ArrayAdapter<String> startAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, startChapter);
         startChap.setAdapter(startAdapter);
         ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, endChapter);
@@ -235,6 +233,80 @@ public class ScheduleCreator extends AppCompatActivity implements AdapterView.On
                 break;
         }
         return startChapter;
+    }
+
+    private List<String> endChapterMaker(String starter) {
+        List<String> endChapter = new ArrayList<String>();
+        switch (starter) {
+            case "1 Nephi":
+                for (int i = 22; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "2 Nephi":
+                for (int i = 33; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "Jacob":
+                for (int i = 7; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "Enos":
+                endChapter.add("Chapter 1");
+                break;
+            case "Jarom":
+                endChapter.add("Chapter 1");
+                break;
+            case "Omni":
+                endChapter.add("Chapter 1");
+                break;
+            case "Words of Mormon":
+                endChapter.add("Chapter 1");
+                break;
+            case "Mosiah":
+                for (int i = 29; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "Alma":
+                for (int i = 63; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "Helaman":
+                for (int i = 16; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "3 Nephi":
+                for (int i = 30; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "4 Nephi":
+                endChapter.add("Chapter 1");
+                break;
+            case "Mormon":
+                for (int i = 9; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "Ether":
+                for (int i = 15; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            case "Moroni":
+                for (int i = 10; i > 0; i--) {
+                    endChapter.add("Chapter " + (i));
+                }
+                break;
+            default:
+                break;
+        }
+        return endChapter;
     }
 
     /**
