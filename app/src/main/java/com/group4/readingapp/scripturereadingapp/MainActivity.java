@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        File delete = getFilesDir();
+        File[] toDelete = delete.listFiles();
+
+//        for(int i=0; i<toDelete.length; i++) {
+//                    toDelete[i].delete();
+//        }
         File[] files = getFilesDir().listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name)
             {
@@ -38,7 +44,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        populateSchedules(files);
+        if(files.length != 0){
+//            for(int i = 0; i < files.length; i++) {
+//                if(toDelete[i].getName() == "The_.json") {
+//                    toDelete[i].delete();
+//                }
+//            }
+            populateSchedules(files);
+        }
+
 
     }
     @Override
@@ -51,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 return (name.endsWith(".json"));
             }
         });
-        populateSchedules(files);
+        if(files.length != 0){
+            populateSchedules(files);
+        }
     }
     public void createSchedule(View view) {
         Intent intent = new Intent(MainActivity.this, ScheduleCreator.class);

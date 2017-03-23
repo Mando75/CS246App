@@ -11,7 +11,8 @@
         android:layout_width="368dp"
         android:layout_height="551dp"
         tools:layout_editor_absoluteX="-12dp"
-        tools:layout_editor_absoluteY="-11dp">
+        tools:layout_editor_absoluteY="-11dp"
+        >
 
     <TimePicker
         android:layout_width="300dp"
