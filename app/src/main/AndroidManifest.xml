@@ -24,11 +24,6 @@
             android:name=".ScheduleCreator"
             android:label="@string/creator_header"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ResultActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_result"
-            android:theme="@style/FullscreenTheme" />
 
         <activity
             android:name=".ScheduleViewer"

@@ -18,7 +18,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent){
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent reading = new Intent(context, ResultActivity.class);
+        Intent reading = new Intent(context, MainActivity.class);
         reading.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pi = PendingIntent.getActivity(context, 100, reading, PendingIntent.FLAG_UPDATE_CURRENT);
