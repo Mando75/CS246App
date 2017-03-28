@@ -14,15 +14,6 @@
         tools:layout_editor_absoluteX="-12dp"
         tools:layout_editor_absoluteY="-11dp">
 
-        <TimePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/timer"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true">
-
-        </TimePicker>
-
         <Button
             android:id="@+id/enableNotify"
             android:layout_width="wrap_content"
@@ -33,6 +24,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="82dp"
             android:layout_marginBottom="30dp" />
+
 
     </RelativeLayout>
 
