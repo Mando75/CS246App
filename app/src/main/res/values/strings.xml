@@ -41,5 +41,6 @@
     <string name="schedView">Schedule View</string>
     <string name="dayRead">Today\'s Reading is:</string>
     <string name="title_activity_enable_notifications">EnableNotifications</string>
+    <string name="notifaction_header">Select when you would like to be reminded to read</string>
 
 </resources>
