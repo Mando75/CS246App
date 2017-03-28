@@ -193,11 +193,6 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
             info.set(DailyReading.END_BOOK, endBook);
             info.set(DailyReading.START_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(startBook, startChap)));
             info.set(DailyReading.END_CHAP_REF, "Chapter " + Integer.toString(getBookToRef(endBook, endChap)));
-            // debug
-//            Log.d(TAG, info.get(DailyReading.START_BOOK));
-//            Log.d(TAG, info.get(DailyReading.START_CHAP));
-//            Log.d(TAG, info.get(DailyReading.END_BOOK));
-//            Log.d(TAG, info.get(DailyReading.END_CHAP));
             // add a new daily reading to the array
             readings[i] = new DailyReading(info);
 

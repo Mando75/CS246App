@@ -47,21 +47,5 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/enable_notifi"-->
-        <!--android:onClick="enableNotify"-->
-        <!--tools:layout_editor_absoluteY="214dp"-->
-        <!--tools:layout_editor_absoluteX="101dp">-->
-    <!--</Button>-->
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/disable_notifi"-->
-        <!--android:onClick="disableNotify"-->
-        <!--tools:layout_editor_absoluteY="298dp"-->
-        <!--tools:layout_editor_absoluteX="99dp" />-->
 
 </android.support.constraint.ConstraintLayout>
