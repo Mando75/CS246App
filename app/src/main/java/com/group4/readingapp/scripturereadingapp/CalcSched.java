@@ -287,7 +287,15 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                 });
 
                 TextView textView1 = new TextView(context);
-                textView1.setText("Day " + (i + 1) + ": Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(dailyReading.getEndChap() - dailyReading.getStartChap()) + " chapter(s).");
+                textView1.setLines(2);
+//                if ( getBookToRef(dailyReading.getEndBook(), dailyReading.getEndChap() - 1) == 0) {
+//                    textView1.setText("Read "  + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ","") + " through \n" + dailyReading.getStartBook() + " " + (int)Math.floor(getBookToRef(dailyReading.getStartBook(), dailyReading.getStartChap()) + chapsPerDay -1));
+//                } else {
+//                    textView1.setText("Read " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " through \n" + dailyReading.getEndBook() + " " + getBookToRef(dailyReading.getEndBook(), dailyReading.getEndChap() - 1));
+//                }
+
+
+                textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(dailyReading.getEndChap() - dailyReading.getStartChap()) + " chapter(s).");
                 textView1.setId(View.generateViewId());
                 textView1.setTextSize(20);
                 textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));

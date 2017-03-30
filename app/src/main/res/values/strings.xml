@@ -42,5 +42,7 @@
     <string name="dayRead">Today\'s Reading is:</string>
     <string name="title_activity_enable_notifications">EnableNotifications</string>
     <string name="notifaction_header">Select when you would like to be reminded to read</string>
+    <string name="explainView">Each card below is one day\'s reading. When you check it off, those chapters will be marked as completed.
+    They will not appear the next time you view this schedule.</string>
 
 </resources>

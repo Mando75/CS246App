@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 return (name.endsWith(".json"));
             }
         });
+        if (files.length == 0) {
+            Toast.makeText(this, "It looks like you don't have any reading Schedules! Click the pink button to create a new one.", Toast.LENGTH_LONG).show();
+        }
         populateSchedules(files);
     }
     public void createSchedule(View view) {
