@@ -2,6 +2,7 @@ package com.group4.readingapp.scripturereadingapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -18,6 +19,8 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -265,15 +268,26 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
                         if ( isChecked )
                         {
                             Log.d(TAG, "onCheckedChanged: " + finalReading.getEndBook() + " " + finalReading.getEndChapRef());
-                            removeCard(finalReading);
-                            theActivity.completed(finished);
+
+//                            removeCard(finalReading);
+                            schedule.buildCurrent(finalReading.getEndBook(), finalReading.getEndChapRef().replace("Chapter ", ""), finalReading.getEndChap());
+                            if((schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt()) < 1){
+                                finished = true;
+                            }
+                            schedule.setFinished(finished);
+                            schedule.setLastModified(today);
+                            schedule.buildJson();
+                            schedule.saveToFile(context, filenameResave);
+                            Log.d(TAG, "onCheckedChanged: Item Removed");
+//                            theActivity.completed(finished);
+                            Toast.makeText(context, "Reading Completed! Nice job!", Toast.LENGTH_LONG).show();
                         }
 
                     }
                 });
 
                 TextView textView1 = new TextView(context);
-                textView1.setText("Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(dailyReading.getEndChap() - dailyReading.getStartChap()) + " chapter(s).");
+                textView1.setText("Day " + (i + 1) + ": Start at " + dailyReading.getStartBook() + " " + dailyReading.getStartChapRef().replace("Chapter ", "") + " and read " + Math.round(dailyReading.getEndChap() - dailyReading.getStartChap()) + " chapter(s).");
                 textView1.setId(View.generateViewId());
                 textView1.setTextSize(20);
                 textView1.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));

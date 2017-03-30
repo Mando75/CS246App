@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (files.length == 0) {
+            Toast.makeText(this, "It looks like you don't have any reading Schedules! Click the pink button to create a new one.", Toast.LENGTH_LONG).show();
+        }
         populateSchedules(files);
 
     }
