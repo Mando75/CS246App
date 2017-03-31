@@ -9,6 +9,8 @@ import android.database.CursorJoiner;
 import android.support.v4.app.NotificationCompat;
 
 /**
+ * NotificationReceiver extends Broadcastreceiver
+ * onReceive(Context context, Intent intent)
  * Created by Jonathon on 3/8/2017.
  */
 
@@ -16,8 +18,11 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent){
+
+        // used for actually sending the notification to the system
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // this is the activity that the notification will take the user to.
         Intent reading = new Intent(context, MainActivity.class);
         reading.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
