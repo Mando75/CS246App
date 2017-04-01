@@ -3,6 +3,8 @@ package com.group4.readingapp.scripturereadingapp;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -23,13 +26,24 @@ import java.io.FilenameFilter;
 
 public class MainActivity extends AppCompatActivity {
     private static String TAG = "Main Activity";
-
+    private CoordinatorLayout coordinatorLayout;
+    private Snackbar snackbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .parentLayout);
+        snackbar = Snackbar
+                .make(coordinatorLayout, "No Schedules to display. Click the pink button ta make a new one!", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("DISMISS", new View.OnClickListener() {
+            @Override
+            public void onClick (View view) {
+                snackbar.dismiss();
+            }
+        });
 
         File[] files = getFilesDir().listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name)
@@ -37,7 +51,12 @@ public class MainActivity extends AppCompatActivity {
                 return (name.endsWith(".json"));
             }
         });
-
+        Log.d(TAG, "length " + files.length);
+        if (files.length == 0){
+            Log.d(TAG, "triggered");
+            snackbar.show();
+        }
+        
         populateSchedules(files);
 
     }
@@ -51,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 return (name.endsWith(".json"));
             }
         });
+        if(files.length == 0) {
+            snackbar.show();
+        } else {
+            snackbar.dismiss();
+        }
         populateSchedules(files);
     }
     public void createSchedule(View view) {

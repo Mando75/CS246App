@@ -18,6 +18,8 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -299,7 +301,7 @@ public class CalcSched extends AsyncTask<Void, DailyReading, Void> {
         schedule.buildJson();
         schedule.saveToFile(context, filenameResave);
         Log.d(TAG, "onCheckedChanged: Item Removed");
-
+        Toast.makeText(context, "Reading Completed, Nice Job!", Toast.LENGTH_SHORT).show();
     }
     public void save(){
         if((schedule.getEndPos().get("chapId").getAsInt() - schedule.getCurrentPos().get("chapId").getAsInt()) < 1){
